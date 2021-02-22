@@ -1,3 +1,4 @@
+
 function sandbox(var,func)
 	local env = getfenv(func)
 	local newenv = setmetatable({},{
@@ -2432,6 +2433,7 @@ local plr = plrs.LocalPlayer
 local button = script.Parent
 local toggled = false
 local espFolder = Instance.new("Folder",game.CoreGui)
+espFolder.Name = "outer"
 
 function chamPlr(plr)
 	if plr.Character then
@@ -2451,7 +2453,7 @@ function chamPlr(plr)
 					end
 				end)
 				plr.Character.HumanoidRootPart.AncestryChanged:connect(function()
-					chamThing:Destroy()
+				chamThing:Destroy()
 				end)
 			end
 		end
@@ -2495,7 +2497,11 @@ local function onButtonActivated()
 		toggled = false
 		script.Parent.BackgroundTransparency = 0
 		script.Parent.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
-
+		for	i,v in pairs(game.CoreGui.outer:GetDescendants())  do
+			if v:IsA("BoxHandleAdornment") then
+				v:Destroy()
+			end
+		end
 	end
 end
 
@@ -2823,7 +2829,7 @@ local plr = plrs.LocalPlayer
 local button = script.Parent
 local toggled = false
 local espFolder2 = Instance.new("Folder",game.CoreGui)
-
+espFolder2.Name = "inner"
 
 function chamPlr(plr)
 	if plr.Character then
@@ -2868,7 +2874,7 @@ local function onButtonActivated()
 			wait()
 			local Player = game:GetService('Players').LocalPlayer
 			Player.CharacterAdded:Wait()
-			wait(5)
+			wait(3)
 			for i,v in next,plrs:GetPlayers() do
 				if v.Team ~= plr.Team and v.Character and v.Character.HumanoidRootPart and v.Character.Humanoid.Health > 0 and plrChams then
 					chamPlr(v)
@@ -2887,7 +2893,11 @@ local function onButtonActivated()
 		toggled = false
 		script.Parent.BackgroundTransparency = 0
 		script.Parent.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
-		
+		for	i,v in pairs(game.CoreGui.inner:GetDescendants())  do
+			if v:IsA("BoxHandleAdornment") then
+				v:Destroy()
+			end
+		end
 	end
 end
 
@@ -3459,13 +3469,13 @@ local function onButtonActivated()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
 		
 		while toggled == true do
+			wait()
 			local ArmColor = script.Parent.Color.BackgroundColor3
 			local GunColor = script.Parent.Color2.BackgroundColor3
 			if TP.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
 				wait()
 				waste()
 			else
-				wait()
 				if script.Parent.Parent.DropDown.Selection.Text == ("Forcefield") then
 					for _,gun in pairs(workspace.Camera:GetDescendants()) do
 						if gun.Name ~= "Flash" and gun.Name ~= "Right Arm" and gun.Name ~= "Left Arm" and gun.Name ~= "Sleeve" and gun.Name ~= "Glove" and gun.Name ~= "HumanoidRootPart" then
@@ -4205,7 +4215,7 @@ local function onButtonActivated()
 			local Color = script.Parent.Color2.BackgroundColor3
 			if plr.Character then
 				if script.Parent.Parent.DropDown2.Selection.Text == ("Plastic") then
-					for _,v in pairs(workspace.yourself:GetDescendants()) do 
+					for _,v in pairs(plrs.LocalPlayer.Character:GetDescendants()) do 
 						if v:IsA("Part") or v:IsA("MeshPart") and v.Name ~= "HeadHB" then
 							pcall(function() 
 								v.Material = Enum.Material.Plastic
@@ -4229,7 +4239,7 @@ local function onButtonActivated()
 				end
 
 				if script.Parent.Parent.DropDown2.Selection.Text == ("Neon") then
-					for _,v in pairs(workspace.yourself:GetDescendants()) do 
+					for _,v in pairs(plrs.LocalPlayer.Character:GetDescendants()) do 
 						if v:IsA("Part") or v:IsA("MeshPart") and v.Name ~= "HeadHB" then
 							pcall(function() 
 								v.Material = Enum.Material.Neon
@@ -4885,14 +4895,15 @@ local function onButtonActivated()
 		toggled = true
 		script.Parent.BackgroundTransparency = 0
 		script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
-		local Color = script.Parent.Color.BackgroundColor3	
 		Instance.new("ColorCorrectionEffect", game.Lighting)
 		local ColorCorrection = game.Lighting.ColorCorrection
 		ColorCorrection.Name = "Ambience"
-		ColorCorrection.TintColor = Color
-		lighting.ColorShift_Top = Color
-	
-			
+		while toggled == true do
+			wait()
+			local Color = script.Parent.Color.BackgroundColor3	
+			ColorCorrection.TintColor = Color
+			lighting.ColorShift_Top = Color
+		end		
 	else
 		toggled = false
 		script.Parent.BackgroundTransparency = 0
@@ -8167,18 +8178,17 @@ script.Parent.MouseButton1Click:Connect(function()
 					GUI.AlwaysOnTop = true
 					GUI.Name = "ammoesp"
 					
-					spawn(function()
-						while wait() do
-							local Color = script.Parent.Color.BackgroundColor3
-							Frame.BackgroundColor3 = Color
-						end
-					end)	
 					Frame.BackgroundTransparency = 0
 					Frame.BorderSizePixel = 1
 					Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					Frame.Size = UDim2.new(1, 0, 1, 0)
 					Frame.BorderMode = Enum.BorderMode.Inset
-					
+					spawn(function()
+						while wait() do
+							local Color = script.Parent.Color.BackgroundColor3
+							Frame.BackgroundColor3 = Color
+						end	
+					end)
 				end
 			end
 		end
@@ -8574,19 +8584,18 @@ script.Parent.MouseButton1Click:Connect(function()
 					nameesp.Position = UDim2.new(0, 0, 0, 0)
 					nameesp.Size = UDim2.new(1, 0, 1, 0)
 					nameesp.Font = Enum.Font.TitilliumWeb
-					nameesp.Text = o.Parent.Humanoid.DisplayName
 					nameesp.TextScaled = true
 					nameesp.TextSize = 50
 					nameesp.RichText = true
 					nameesp.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 					nameesp.TextStrokeTransparency = 0.9
-					
 					spawn(function()
+						nameesp.Text = o.Parent.Humanoid.DisplayName
 						while wait() do
 							local Color = script.Parent.Color.BackgroundColor3
 							nameesp.TextColor3 = Color
 						end
-					end)
+					end)	
 				end
 			end
 		end
@@ -8989,19 +8998,13 @@ script.Parent.MouseButton1Click:Connect(function()
 					health.TextScaled = true
 					health.TextSize = 50
 					health.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-					health.TextStrokeTransparency = 0.9
-					
-					spawn(function()
-						while wait() do
-							local Color = script.Parent.Color.BackgroundColor3
-							health.TextColor3 = Color
-						end
-					end)
-					
+					health.TextStrokeTransparency = 0.9				
 					spawn(function()
 					while wait() do
 						local healthtext = o.Parent.Humanoid.Health
 						health.Text = round(healthtext)
+						local Color = script.Parent.Color.BackgroundColor3
+						health.TextColor3 = Color
 					end
 				end)
 			end
@@ -9407,13 +9410,9 @@ script.Parent.MouseButton1Click:Connect(function()
 					
 					spawn(function()
 						while wait() do	
+							weaponesp.Text = o.Parent.EquippedTool.Value
 							local Color = script.Parent.Color.BackgroundColor3
 							weaponesp.TextColor3 = Color
-						end
-					end)
-					spawn(function()
-						while wait() do	
-							weaponesp.Text = o.Parent.EquippedTool.Value
 						end
 					end)
 				end
@@ -9904,7 +9903,6 @@ script.Parent.MouseButton1Click:Connect(function()
 					FrameRight.Size = UDim2.new(0, 3, 1, 0)
 					FrameRight.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					FrameRight.BorderMode = Enum.BorderMode.Inset
-					
 					spawn(function()
 						while wait() do
 							local Color = script.Parent.Color.BackgroundColor3
@@ -9912,8 +9910,8 @@ script.Parent.MouseButton1Click:Connect(function()
 							FrameBottom.BackgroundColor3 = Color
 							FrameLeft.BackgroundColor3 = Color
 							FrameRight.BackgroundColor3 = Color
-						end	
-					end)
+						end
+					end)	
 				end
 			end
 		end
@@ -10318,16 +10316,11 @@ script.Parent.MouseButton1Click:Connect(function()
 					distanceesp.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 					distanceesp.TextStrokeTransparency = 0.9
 					spawn(function()
-						while wait() do
-							local Color = script.Parent.Color.BackgroundColor3
-							distanceesp.TextColor3 = Color
-						end	
-					end)
-					
-					spawn(function()
 						while wait(0.2) do
 							local DistanceFromPlayer = (plr.Character.Head.Position-v.Character.Head.Position).Magnitude
 							distanceesp.Text = round(DistanceFromPlayer).." studs"
+							local Color = script.Parent.Color.BackgroundColor3
+							distanceesp.TextColor3 = Color
 						end
 					end)
 				end
@@ -11173,39 +11166,42 @@ TextButton432.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript433.Name = "Stats"
 LocalScript433.Parent = TextButton432
 table.insert(cors,sandbox(LocalScript433,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 LocalScript434.Name = "A"
@@ -11279,39 +11275,42 @@ TextButton435.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript436.Name = "Stats"
 LocalScript436.Parent = TextButton435
 table.insert(cors,sandbox(LocalScript436,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton437.Name = "4"
@@ -11332,39 +11331,42 @@ TextButton437.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript438.Name = "Stats"
 LocalScript438.Parent = TextButton437
 table.insert(cors,sandbox(LocalScript438,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton439.Name = "3"
@@ -11385,39 +11387,42 @@ TextButton439.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript440.Name = "Stats"
 LocalScript440.Parent = TextButton439
 table.insert(cors,sandbox(LocalScript440,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton441.Name = "2"
@@ -11438,39 +11443,42 @@ TextButton441.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript442.Name = "Stats"
 LocalScript442.Parent = TextButton441
 table.insert(cors,sandbox(LocalScript442,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton443.Name = "1"
@@ -11490,39 +11498,42 @@ TextButton443.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript444.Name = "Stats"
 LocalScript444.Parent = TextButton443
 table.insert(cors,sandbox(LocalScript444,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton445.Name = "8"
@@ -11543,39 +11554,42 @@ TextButton445.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript446.Name = "Stats"
 LocalScript446.Parent = TextButton445
 table.insert(cors,sandbox(LocalScript446,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton447.Name = "9"
@@ -11596,39 +11610,42 @@ TextButton447.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript448.Name = "Stats"
 LocalScript448.Parent = TextButton447
 table.insert(cors,sandbox(LocalScript448,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton449.Name = "10"
@@ -11649,39 +11666,42 @@ TextButton449.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript450.Name = "Stats"
 LocalScript450.Parent = TextButton449
 table.insert(cors,sandbox(LocalScript450,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton451.Name = "11"
@@ -11702,39 +11722,42 @@ TextButton451.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript452.Name = "Stats"
 LocalScript452.Parent = TextButton451
 table.insert(cors,sandbox(LocalScript452,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton453.Name = "12"
@@ -11755,39 +11778,42 @@ TextButton453.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript454.Name = "Stats"
 LocalScript454.Parent = TextButton453
 table.insert(cors,sandbox(LocalScript454,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton455.Name = "6"
@@ -11808,39 +11834,42 @@ TextButton455.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript456.Name = "Stats"
 LocalScript456.Parent = TextButton455
 table.insert(cors,sandbox(LocalScript456,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton457.Name = "7"
@@ -11861,39 +11890,42 @@ TextButton457.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript458.Name = "Stats"
 LocalScript458.Parent = TextButton457
 table.insert(cors,sandbox(LocalScript458,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 TextButton459.Name = "13"
@@ -11914,39 +11946,42 @@ TextButton459.TextXAlignment = Enum.TextXAlignment.Left
 LocalScript460.Name = "Stats"
 LocalScript460.Parent = TextButton459
 table.insert(cors,sandbox(LocalScript460,function()
-while wait() do
-	--	local s = script 
-	--	for _, v in pairs( script.Parent:GetDescendants() ) do 
-	--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
-	--		end 
-	--	end
-	--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
-			game:GetService("Players")
-			local plrnam = script.Parent.Text
-			local Player = game.Players:FindFirstChild(plrnam)
-			local button = script.Parent
+pcall(function()
+	while wait() do
+		--	local s = script 
+		--	for _, v in pairs( script.Parent:GetDescendants() ) do 
+		--		if v:IsA("TextButton") and v.Name ~= "Template" then s:Clone().Parent = v
+		--		end 
+		--	end
+		--	if script.Parent:IsA("TextButton") and script.Parent.Name ~= "Template"then
+		game:GetService("Players")
+		local plrnam = script.Parent.Text
+		local Player = game.Players:FindFirstChild(plrnam)
+		local button = script.Parent
 
-			local function onButtonActivated()
-				script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
-				script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
-				--local ass = gethiddenproperty or get_hidden_prop
-				--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
-				--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
-				--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
-				if Player.MembershipType == Enum.MembershipType.Premium then
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
-				else
-					script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
+		local function onButtonActivated()
+			script.Parent.Parent.Parent.Parent.OtherTab.Age2.Text = Player.AccountAge
+			script.Parent.Parent.Parent.Parent.OtherTab.UID2.Text = Player.UserId
+			--local ass = gethiddenproperty or get_hidden_prop
+			--local Thing = game:GetService("HttpService"):JSONDecode(game:HttpGet("http://country.io/names.json"))
+			--local ParsedCountry = Thing[ass(Player, "CountryRegionCodeReplicate")]
+			--script.Parent.Parent.Parent.Parent.OtherTab.extra2.Text = tostring(ParsedCountry)
+			if Player.MembershipType == Enum.MembershipType.Premium then
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("Yes")
+			else
+				script.Parent.Parent.Parent.Parent.OtherTab.Club2.Text = ("No")
 
 
-					script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
-
-				end
+				script.Parent.Parent.Parent.Parent.OtherTab.Pic2.Image = "https://www.roblox.com/bust-thumbnail/image?userId=" ..Player.UserId.."&width=420&height=420&format=png"
 
 			end
-			button.Activated:Connect(onButtonActivated)
-	--	end
-end
+
+		end
+		button.Activated:Connect(onButtonActivated)
+		--	end
+	end
+
+end)
 
 end))
 Frame461.Name = "OtherTab"
