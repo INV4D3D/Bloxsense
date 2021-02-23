@@ -1614,6 +1614,9 @@ local METATABLE = getrawmetatable(game)
 setreadonly(METATABLE,false)
 local NICE = METATABLE.__namecall
 
+--loop
+local rageloop
+
 --Prevents rapidfire
 function coolDown()
 	shootCooldown = true
@@ -1673,7 +1676,27 @@ end
 function Doubletap()
 	if not shootCooldown then
 		client.firebullet()
-		fireBullet()
+		spawn(function()
+			if script.Parent.Parent.Parent.Parent.Parent.Visual.Main.OtherESPTab.Tracers.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
+				local beam = createBeam(game.Players.LocalPlayer.Character.Head.CFrame.p, target.CFrame.p)
+				for i = 1, 50 do
+					wait()
+					beam.Transparency = i/50
+				end
+				beam:Destroy()
+			end
+		end)
+		client.firebullet()
+		spawn(function()
+			if script.Parent.Parent.Parent.Parent.Parent.Visual.Main.OtherESPTab.Tracers.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
+				local beam = createBeam(game.Players.LocalPlayer.Character.Head.CFrame.p, target.CFrame.p)
+				for i = 1, 50 do
+					wait()
+					beam.Transparency = i/50
+				end
+				beam:Destroy()
+			end
+		end)
 		coolDown()
 	end
 end
@@ -1684,7 +1707,7 @@ function createBeam(p1, p2)
 	beam.Anchored = true
 	beam.CanCollide = false
 	beam.Material = Enum.Material.ForceField
-	beam.Color = Color3.fromRGB(255, 58, 236)
+	beam.Color = script.Parent.Parent.Parent.Parent.Parent.Visual.Main.OtherESPTab.Tracers.Color.BackgroundColor3
 	beam.Size = Vector3.new(0.1, 0.1, (p1 - p2).magnitude)
 	beam.CFrame = CFrame.new(p1, p2) * CFrame.new(0, 0, -beam.Size.Z / 2)
 	return beam
@@ -1705,11 +1728,14 @@ function simulateHeadShot(target)
 	if gun:FindFirstChild("Penetration") then
 		gunPen = gun.Penetration.Value * 0.01
 	end
+	if gun:FindFirstChild("Melee") then
+		gunRange = 72
+	end
 	if gun:FindFirstChild("Range") then
-		gunRange = gun.Range.Value*3
+		gunRange = gun.Range.Value*10
 	end
 	if gun:FindFirstChild("DMG") then
-		gunDMG = (gun.DMG.Value)*4
+		gunDMG = (gun.DMG.Value)
 	end
 	local direction = CFrame.new(cam.CFrame.p, target.Character.Head.Position).lookVector.unit * gunRange * 0.0694
 	local rayCasted = Ray.new(cam.CFrame.p, direction)
@@ -1779,8 +1805,11 @@ function simulateBodyShot(target)
 	if gun:FindFirstChild("Penetration") then
 		gunPen = gun.Penetration.Value * 0.01
 	end
+	if gun:FindFirstChild("Melee") then
+		gunRange = 72
+	end
 	if gun:FindFirstChild("Range") then
-		gunRange = gun.Range.Value*3
+		gunRange = gun.Range.Value*10
 	end
 	if gun:FindFirstChild("DMG") then
 		gunDMG = gun.DMG.Value
@@ -1842,16 +1871,16 @@ local function onButtonActivated()
 	if rage == false then
 		rage = true
 		script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
-		runserv.Stepped:Connect(function()
+		pcall(function()
+		rageloop=runserv.Stepped:Connect(function()
 			local mindamage = script.Parent.Parent.Background.Percent.Value
 			if rage and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 				for i,v in next,plrs:GetPlayers() do
 					if v ~= plr and v.Character and v.Character.Humanoid.Health > 0 and v.TeamColor ~= game.Players.LocalPlayer.TeamColor then
-						pcall(function()
 							local partHit, posHit, damageModifier, wallbang = simulateHeadShot(v)
 							local partHit2, posHit2, damageModifier2, wallbang2 = simulateBodyShot(v)
-							if partHit and (damageModifier * client.gun.DMG.Value) > mindamage or partHit2 and (damageModifier2 * client.gun.DMG.Value) > mindamage then
-								if (damageModifier * client.gun.DMG.Value) >= (damageModifier2 * client.gun.DMG.Value) then
+							if partHit and (damageModifier * client.gun.DMG.Value * 4) > mindamage or partHit2 and (damageModifier2 * client.gun.DMG.Value) > mindamage then
+								if (damageModifier * client.gun.DMG.Value * 4) >= (damageModifier2 * client.gun.DMG.Value) then
 									target = partHit
 									script.Firing.Value = true
 									METATABLE.__namecall = newcclosure(
@@ -1874,7 +1903,7 @@ local function onButtonActivated()
 									end
 									fireBullet()
 									script.Firing.Value = false		
-								elseif (damageModifier * client.gun.DMG.Value) < (damageModifier2 * client.gun.DMG.Value) then
+								elseif (damageModifier * client.gun.DMG.Value * 4) < (damageModifier2 * client.gun.DMG.Value) then
 									target = partHit2
 									script.Firing.Value = true
 									METATABLE.__namecall = newcclosure(
@@ -1901,14 +1930,15 @@ local function onButtonActivated()
 							else
 								target = nil
 							end
-						end)
+						end
 					end
 				end
-			end
+			end)
 		end)
 	else
 		rage = false
 		script.Parent.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
+		rageloop:Disconnect()
 	end
 end
 
@@ -3995,7 +4025,7 @@ local colourSlider = colourGradientFrame:WaitForChild("Slider")
 local darknessGradientFrame =  script.Parent.DarknessGradientFrame
 local darknessSlider = darknessGradientFrame:WaitForChild("Slider")
 
-local colourPreview = script.Parent.Parent.Parent.Color
+local colourPreview = script.Parent.Parent.Parent.Color2
 
 
 local mouse = game.Players.LocalPlayer:GetMouse()
@@ -6239,23 +6269,24 @@ local function onButtonActivated()
 		script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
 		
 		runserv.RenderStepped:Connect(function()
+			pcall(function()
+				local ViewmodelX = tonumber(script.Parent.Parent.X.Bar.Button.ValueText.Text)
+				local ViewmodelY = tonumber(script.Parent.Parent.Y.Bar.Button.ValueText.Text)
+				local ViewmodelZ = tonumber(script.Parent.Parent.Z.Bar.Button.ValueText.Text)
 
-			local ViewmodelX = tonumber(script.Parent.Parent.X.Bar.Button.ValueText.Text)
-			local ViewmodelY = tonumber(script.Parent.Parent.Y.Bar.Button.ValueText.Text)
-			local ViewmodelZ = tonumber(script.Parent.Parent.Z.Bar.Button.ValueText.Text)
+				mt.__namecall = newcclosure(function(self, ...)
+					local method = getnamecallmethod()
+					local callingscript = getcallingscript()
+					local args = {...}
 
-			mt.__namecall = newcclosure(function(self, ...)
-				local method = getnamecallmethod()
-				local callingscript = getcallingscript()
-				local args = {...}
-
-				if not checkcaller() then
-					if method == "SetPrimaryPartCFrame" and self.Name == "Arms" and toggled == true then
-						args[1] = args[1] * CFrame.new(Vector3.new(math.rad(ViewmodelX-180), math.rad(ViewmodelY-180), math.rad(ViewmodelZ-180)))
+					if not checkcaller() then
+						if method == "SetPrimaryPartCFrame" and self.Name == "Arms" and toggled == true then
+							args[1] = args[1] * CFrame.new(Vector3.new(math.rad(ViewmodelX-180), math.rad(ViewmodelY-180), math.rad(ViewmodelZ-180)))
+						end
 					end
-				end
 
-				return oldNamecall(self, unpack(args))
+					return oldNamecall(self, unpack(args))
+				end)
 			end)
 		end)
 	else
