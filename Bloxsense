@@ -1936,7 +1936,6 @@ table.insert(cors,sandbox(LocalScript53,function()
 		if rage == false then
 			rage = true
 			script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
-			pcall(function()
 			autowallloop=runserv.Stepped:Connect(function()
 				if rage and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 					for i,v in next,plrs:GetPlayers() do
@@ -1999,7 +1998,6 @@ table.insert(cors,sandbox(LocalScript53,function()
 						end
 					end
 				end
-			end)
 			end)
 		else
 			rage = false
