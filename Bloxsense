@@ -1,3 +1,4 @@
+function E()
 function sandbox(var,func)
 	local env = getfenv(func)
 	local newenv = setmetatable({},{
@@ -763,6 +764,7 @@ TextLabel745 = Instance.new("TextLabel")
 TextLabel746 = Instance.new("TextLabel")
 TextLabel747 = Instance.new("TextLabel")
 TextLabel748 = Instance.new("TextLabel")
+LocalScript749 = Instance.new("LocalScript")
 ScreenGui0.Name = "gamesense.pub"
 ScreenGui0.Parent = mas
 ScreenGui0.DisplayOrder = 99999999
@@ -1017,7 +1019,7 @@ Frame17.BackgroundColor = BrickColor.new("Really black")
 Frame17.BackgroundColor3 = Color3.new(0.0862745, 0.0862745, 0.0862745)
 Frame17.BorderColor = BrickColor.new("Dirt brown")
 Frame17.BorderColor3 = Color3.new(0.262745, 0.262745, 0.262745)
-Frame17.BorderSizePixel = 9
+Frame17.BorderSizePixel = 8
 Frame17.ZIndex = 0
 Frame18.Name = "Tabs"
 Frame18.Parent = Frame17
@@ -1657,21 +1659,24 @@ local plr = plrs.LocalPlayer
 local repstor = game:GetService("ReplicatedStorage")
 local runserv = game:GetService("RunService")
 
---Random
-local rage = false
-local button = script.Parent
-
 -- Variables
 local cam = workspace.CurrentCamera
 local client = getsenv(plr.PlayerGui.Client)
 
--- Metatables and Silent aim
-local METATABLE = getrawmetatable(game)
-setreadonly(METATABLE,false)
-local NICE = METATABLE.__namecall
 
---loop
-local rageloop
+-- Metatables and Silent aim
+local mt = getrawmetatable(game)
+setreadonly(mt,false)
+local nc = mt.__namecall
+
+--Random
+local rage = false
+local button = script.Parent
+
+
+--Loops(optimization shit)
+local autowallloop
+
 
 --Prevents rapidfire
 function coolDown()
@@ -1701,6 +1706,7 @@ function HitPart(target)
 	Remote:FireServer(unpack(Arguments))
 end
 
+
 --Firebullet
 function fireBullet()
 	if not shootCooldown then
@@ -1719,14 +1725,15 @@ function fireBullet()
 	end
 end
 
+
 --Boosted damage
-function hook_Hitpart(target)
+function hook_Hitpart()
 	if not shootCooldown then
-		client.firebullet()
-		HitPart(target)
-		coolDown()
-	end
+		HitPart(v)
+		coolDown()	
+	end	
 end
+
 
 --Doubletap
 function Doubletap()
@@ -1757,6 +1764,8 @@ function Doubletap()
 	end
 end
 
+
+
 --BulletTracers
 function createBeam(p1, p2)
 	local beam = Instance.new("Part", workspace)
@@ -1768,6 +1777,8 @@ function createBeam(p1, p2)
 	beam.CFrame = CFrame.new(p1, p2) * CFrame.new(0, 0, -beam.Size.Z / 2)
 	return beam
 end
+
+
 
 --Autowall to the Head
 function simulateHeadShot(target)
@@ -1784,14 +1795,11 @@ function simulateHeadShot(target)
 	if gun:FindFirstChild("Penetration") then
 		gunPen = gun.Penetration.Value * 0.01
 	end
-	if gun:FindFirstChild("Melee") then
-		gunRange = 72
-	end
 	if gun:FindFirstChild("Range") then
-		gunRange = gun.Range.Value*10
+		gunRange = gun.Range.Value
 	end
 	if gun:FindFirstChild("DMG") then
-		gunDMG = (gun.DMG.Value * 4)
+		gunDMG = (gun.DMG.Value)*4
 	end
 	local direction = CFrame.new(cam.CFrame.p, target.Character.Head.Position).lookVector.unit * gunRange * 0.0694
 	local rayCasted = Ray.new(cam.CFrame.p, direction)
@@ -1809,9 +1817,9 @@ function simulateHeadShot(target)
 				partModifier = 3
 			elseif partHit.Material == Enum.Material.CorrodedMetal or partHit.Material == Enum.Material.Metal or partHit.Material == Enum.Material.Concrete or partHit.Material == Enum.Material.Brick then
 				partModifier = 2
-			elseif partHit.Name == "Grate" or partHit.Material == Enum.Material.Wood or partHit.Material == Enum.Material.WoodPlanks or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid") then
+			elseif partHit.Name == "Grate" or partHit.Material == Enum.Material.Wood or partHit.Material == Enum.Material.WoodPlanks then
 				partModifier = 0.1
-			elseif partHit.Transparency == 1 or partHit.CanCollide == false or partHit.Name == "Glass" or partHit.Name == "Cardboard" or partHit:IsDescendantOf(game.Workspace.Ray_Ignore) or partHit:IsDescendantOf(game.Workspace.Debris) or partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" then
+			elseif partHit.Transparency == 1 or partHit.CanCollide == false or partHit.Name == "Glass" or partHit.Name == "Cardboard" or partHit:IsDescendantOf(game.Workspace.Ray_Ignore) or partHit:IsDescendantOf(game.Workspace.Debris) then
 				partModifier = 0
 			elseif partHit.Name == "nowallbang" then
 				partModifier = 100
@@ -1826,7 +1834,7 @@ function simulateHeadShot(target)
 			if partPenetrated >= 1 then
 				wallbang = true
 			end
-			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent.className == "Accessory" or partHit and partHit.Parent.className == "Hat" or partHit.Name == "HumanoidRootPart" and partHit.Parent.Name ~= "Door" or partHit.Name == "Head" and partHit.Parent:FindFirstChild("Hostage") == nil then
+			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent.className == "Accessory" or partHit and partHit.Parent.className == "Hat" and partHit.Parent.Name ~= "Door" and partHit.Parent:FindFirstChild("Hostage") == nil then
 			else
 				if partHit and partHit:IsDescendantOf(target.Character) and partHit.Transparency < 1 or partHit.Name == "HeadHB" then
 					return partHit, posHit, damageModifier, wallbang
@@ -1836,7 +1844,7 @@ function simulateHeadShot(target)
 			if partModifier > 0 then
 				partPenetrated = partPenetrated + 1
 			end
-			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent and partHit.Parent.Parent and partHit.Parent.Parent:FindFirstChild("Humanoid2") or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid2") or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid") and (1 > partHit.Transparency or partHit.Name == "HeadHB") and partHit.Parent:IsA("Model") then
+			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent and partHit.Parent.Parent and partHit.Parent.Parent:FindFirstChild("Humanoid2") or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid2") or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid") and partHit.Parent:IsA("Model") then
 				table.insert(hitList, partHit.Parent)
 			else
 				table.insert(hitList, partHit)
@@ -1861,11 +1869,8 @@ function simulateBodyShot(target)
 	if gun:FindFirstChild("Penetration") then
 		gunPen = gun.Penetration.Value * 0.01
 	end
-	if gun:FindFirstChild("Melee") then
-		gunRange = 72
-	end
 	if gun:FindFirstChild("Range") then
-		gunRange = gun.Range.Value*10
+		gunRange = gun.Range.Value
 	end
 	if gun:FindFirstChild("DMG") then
 		gunDMG = gun.DMG.Value
@@ -1886,9 +1891,9 @@ function simulateBodyShot(target)
 				partModifier = 3
 			elseif partHit.Material == Enum.Material.CorrodedMetal or partHit.Material == Enum.Material.Metal or partHit.Material == Enum.Material.Concrete or partHit.Material == Enum.Material.Brick then
 				partModifier = 2
-			elseif partHit.Name == "Grate" or partHit.Material == Enum.Material.Wood or partHit.Material == Enum.Material.WoodPlanks or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid") then
+			elseif partHit.Name == "Grate" or partHit.Material == Enum.Material.Wood or partHit.Material == Enum.Material.WoodPlanks then
 				partModifier = 0.1
-			elseif partHit.Transparency == 1 or partHit.CanCollide == false or partHit.Name == "Glass" or partHit.Name == "Cardboard" or partHit:IsDescendantOf(game.Workspace.Ray_Ignore) or partHit:IsDescendantOf(game.Workspace.Debris) or partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" then
+			elseif partHit.Transparency == 1 or partHit.CanCollide == false or partHit.Name == "Glass" or partHit.Name == "Cardboard" or partHit:IsDescendantOf(game.Workspace.Ray_Ignore) or partHit:IsDescendantOf(game.Workspace.Debris) then
 				partModifier = 0
 			elseif partHit.Name == "nowallbang" then
 				partModifier = 100
@@ -1903,7 +1908,7 @@ function simulateBodyShot(target)
 			if partPenetrated >= 1 then
 				wallbang = true
 			end
-			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent.className == "Accessory" or partHit and partHit.Parent.className == "Hat" or partHit.Name == "HumanoidRootPart" and partHit.Parent.Name ~= "Door" or partHit.Name == "Head" and partHit.Parent:FindFirstChild("Hostage") == nil then
+			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent.className == "Accessory" or partHit and partHit.Parent.className == "Hat" and partHit.Parent.Name ~= "Door" and partHit.Parent:FindFirstChild("Hostage") == nil then
 			else
 				if partHit and partHit:IsDescendantOf(target.Character) and partHit.Transparency < 1 or partHit.Name == "HeadHB" then
 					return partHit, posHit, damageModifier, wallbang
@@ -1913,7 +1918,7 @@ function simulateBodyShot(target)
 			if partModifier > 0 then
 				partPenetrated = partPenetrated + 1
 			end
-			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent and partHit.Parent.Parent and partHit.Parent.Parent:FindFirstChild("Humanoid2") or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid2") or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid") and (1 > partHit.Transparency or partHit.Name == "HeadHB") and partHit.Parent:IsA("Model") then
+			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent and partHit.Parent.Parent and partHit.Parent.Parent:FindFirstChild("Humanoid2") or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid2") or partHit and partHit.Parent and partHit.Parent:FindFirstChild("Humanoid") and partHit.Parent:IsA("Model") then
 				table.insert(hitList, partHit.Parent)
 			else
 				table.insert(hitList, partHit)
@@ -1923,23 +1928,23 @@ function simulateBodyShot(target)
 end
 
 
+
 local function onButtonActivated()
 	if rage == false then
 		rage = true
 		script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
-		pcall(function()
-			rageloop=runserv.Stepped:Connect(function()
-				local mindamage = script.Parent.Parent.Background.Percent.Value
+		autowallloop=runserv.RenderStepped:Connect(function()
+			pcall(function()
 				if rage and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 					for i,v in next,plrs:GetPlayers() do
-						if v ~= plr and v.Character and v.Character.Humanoid.Health > 0 and v.TeamColor ~= game.Players.LocalPlayer.TeamColor then
+						if v and v ~= plr and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.Team ~= plr.Team then
 							local partHit, posHit, damageModifier, wallbang = simulateHeadShot(v)
 							local partHit2, posHit2, damageModifier2, wallbang2 = simulateBodyShot(v)
-							if partHit and (damageModifier * client.gun.DMG.Value * 4) > mindamage or partHit2 and (damageModifier2 * client.gun.DMG.Value) > mindamage then
-								if (damageModifier * client.gun.DMG.Value * 4) >= (damageModifier2 * client.gun.DMG.Value) then
+							if partHit and (damageModifier * client.gun.DMG.Value * 4) > script.Parent.Parent.Background.Percent.Value or partHit2 and (damageModifier2 * client.gun.DMG.Value) > script.Parent.Parent.Background.Percent.Value then
+								if (damageModifier * client.gun.DMG.Value * 4) > (damageModifier2 * client.gun.DMG.Value) then
 									target = partHit
 									script.Firing.Value = true
-									METATABLE.__namecall = newcclosure(
+									mt.__namecall = newcclosure(
 										function(self,...)
 											local args = {...}
 											local namecall = getnamecallmethod()
@@ -1948,11 +1953,11 @@ local function onButtonActivated()
 													args[1] = Ray.new(workspace.CurrentCamera.CFrame.p, (target.CFrame.p - workspace.CurrentCamera.CFrame.p).unit * 500)
 												end
 											end
-											return NICE(self,unpack(args))
+											return nc(self,unpack(args))
 										end
 									)
 									if script.Parent.Parent.Hitpart.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
-										hook_Hitpart(v)
+										hook_Hitpart()
 									end
 									if script.Parent.Parent.Parent.OtherTab.DT.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
 										Doubletap()
@@ -1962,7 +1967,7 @@ local function onButtonActivated()
 								elseif (damageModifier * client.gun.DMG.Value * 4) < (damageModifier2 * client.gun.DMG.Value) then
 									target = partHit2
 									script.Firing.Value = true
-									METATABLE.__namecall = newcclosure(
+									mt.__namecall = newcclosure(
 										function(self,...)
 											local args = {...}
 											local namecall = getnamecallmethod()
@@ -1971,11 +1976,11 @@ local function onButtonActivated()
 													args[1] = Ray.new(workspace.CurrentCamera.CFrame.p, (target.CFrame.p - workspace.CurrentCamera.CFrame.p).unit * 500)
 												end
 											end
-											return NICE(self,unpack(args))
+											return nc(self,unpack(args))
 										end
 									)
 									if script.Parent.Parent.Hitpart.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
-										hook_Hitpart(v)
+										HitPart(v)
 									end
 									if script.Parent.Parent.Parent.OtherTab.DT.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
 										Doubletap()
@@ -1994,7 +1999,7 @@ local function onButtonActivated()
 	else
 		rage = false
 		script.Parent.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
-		rageloop:Disconnect()
+		autowallloop:Disconnect()
 	end
 end
 
@@ -17679,7 +17684,6 @@ script.Parent.BackgroundTransparency = 1
 
 if load == false then
 	load = true
-	script.Parent.Parent.Parent["gamesense.pub"].Enabled = true
 	local fadeInTween4 = TweenService:Create(MainBackground, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, 0, false, 0), {BackgroundTransparency = 0})
 	fadeInTween4:Play()
 	local fadeInTween5 = TweenService:Create(tab, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, 0, false, 0), {BackgroundTransparency = 0})
@@ -18271,11 +18275,6 @@ frame.Draggable = true
 frame.Active = true
 frame.Selectable = true
 
-
-print("[gamesense] injecting...")
-wait(5)
-print("[gamesense] injected")
-
 local cursor2 = Instance.new("ImageLabel")
 
 
@@ -18562,8 +18561,50 @@ TextLabel748.Text = "69:42:69"
 TextLabel748.TextColor = BrickColor.new("Institutional white")
 TextLabel748.TextColor3 = Color3.new(1, 1, 1)
 TextLabel748.TextSize = 13
+LocalScript749.Name = "Setup"
+LocalScript749.Parent = ScreenGui0
+table.insert(cors,sandbox(LocalScript749,function()
+local valid_chars = {}
+
+local function set_valid(x, y)
+	for i = string.byte(x), string.byte(y) do
+		table.insert(valid_chars, string.char(i))
+	end
+end
+
+local function random_string(length)
+	local s = {}
+	for i = 1, length do s[i] = valid_chars[math.random(1, #valid_chars)] end
+	return table.concat(s)
+end
+
+set_valid('a', 'z')
+set_valid('A', 'Z')
+set_valid('0', '9')
+
+local Meta = getrawmetatable(game)
+setreadonly(Meta,false)
+local oldNamecall = Meta.__namecall
+Meta.__namecall = newcclosure(function(self,...)
+	local Arguments = {...}
+	local Method = getnamecallmethod()
+	if self == game.Players.LocalPlayer and Method == "Kick" and game.PlaceId == 301549746 then
+		print("[bloxsense] counter blox kick attempt detected")
+		return
+	end
+	return oldNamecall(self,unpack(Arguments))
+end)
+
+game.ReplicatedFirst:WaitForChild("Session"):Destroy()
+
+print("[bloxsense] Injected")
+local runservice = game:GetService("RunService")
+game["Run Service"].RenderStepped:Connect(function()
+	script.Parent.Name = random_string(16)	
+end)
+end))
 for i,v in pairs(mas:GetChildren()) do
-    local GUI = v
+	    local GUI = v
 	syn.protect_gui(v)
 	v.Parent = game.CoreGui
 	pcall(function() v:MakeJoints() end)
@@ -18574,3 +18615,5 @@ for i,v in pairs(cors) do
 		pcall(v)
 	end)
 end
+end
+syn.create_secure_function("Bloxsense", E())
