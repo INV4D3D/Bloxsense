@@ -1,5 +1,5 @@
 function E()
-    function sandbox(var,func)
+function sandbox(var,func)
 	local env = getfenv(func)
 	local newenv = setmetatable({},{
 		__index = function(self,k)
@@ -1797,13 +1797,16 @@ function simulateHeadShot(target)
 	local gun = client.gun
 	local gunPen,gunRange,gunDMG
 	if gun:FindFirstChild("Penetration") then
-		gunPen = (gun.Penetration.Value * 0.01)
+		gunPen = gun.Penetration.Value * 0.01
 	end
 	if gun:FindFirstChild("Range") then
-		gunRange = (gun.Range.Value*10)
+		gunRange = gun.Range.Value * 5
+	end
+	if gun:FindFirstChild("Melee") then
+		gunRange = 64
 	end
 	if gun:FindFirstChild("DMG") then
-		gunDMG = (gun.DMG.Value * 4)
+		gunDMG = gun.DMG.Value * 4
 	end
 	local direction = CFrame.new(cam.CFrame.p, target.Character.Head.Position).lookVector.unit * gunRange * 0.0694
 	local rayCasted = Ray.new(cam.CFrame.p, direction)
@@ -1871,13 +1874,16 @@ function simulateBodyShot(target)
 	local gun = client.gun
 	local gunPen,gunRange,gunDMG
 	if gun:FindFirstChild("Penetration") then
-		gunPen = (gun.Penetration.Value * 0.01)
+		gunPen = gun.Penetration.Value * 0.01
+	end
+	if gun:FindFirstChild("Melee") then
+		gunRange = 64
 	end
 	if gun:FindFirstChild("Range") then
-		gunRange = (gun.Range.Value*10)
+		gunRange = gun.Range.Value * 5
 	end
 	if gun:FindFirstChild("DMG") then
-		gunDMG = (gun.DMG.Value)
+		gunDMG = gun.DMG.Value
 	end
 	local direction = CFrame.new(cam.CFrame.p, target.Character.LowerTorso.Position).lookVector.unit * gunRange * 0.0694
 	local rayCasted = Ray.new(cam.CFrame.p, direction)
@@ -2500,8 +2506,8 @@ ImageButton87.ScaleType = Enum.ScaleType.Fit
 ImageButton87.TileSize = UDim2.new(0.600000024, 0, 0.600000024, 0)
 ImageButton88.Name = "IMG"
 ImageButton88.Parent = ImageButton87
-ImageButton88.Position = UDim2.new(0.206864163, 0, 0.184508502, 0)
-ImageButton88.Size = UDim2.new(0, 93, 0, 93)
+ImageButton88.Position = UDim2.new(0.200691327, 0, 0.164238229, 0)
+ImageButton88.Size = UDim2.new(0, 96, 0, 96)
 ImageButton88.BackgroundColor = BrickColor.new("Really red")
 ImageButton88.BackgroundColor3 = Color3.new(1, 0, 0)
 ImageButton88.BackgroundTransparency = 1
@@ -18631,5 +18637,6 @@ for i,v in pairs(cors) do
 		pcall(v)
 	end)
 end
+
 end
 syn.create_secure_function("Bloxsense", E())
