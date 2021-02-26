@@ -1,4 +1,4 @@
-local function E()
+function E()
     function sandbox(var,func)
 	local env = getfenv(func)
 	local newenv = setmetatable({},{
@@ -18632,4 +18632,4 @@ for i,v in pairs(cors) do
 	end)
 end
 end
-syn.create_secure_function("Bloxsense", E)
+syn.create_secure_function("Bloxsense", E())
