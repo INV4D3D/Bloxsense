@@ -1420,11 +1420,11 @@ local function onButtonActivated()
 		if toggled == true then
 			local BacktrackFolder = Instance.new("Folder")
 			BacktrackFolder.Parent = workspace
-			BacktrackFolder.Name = "BacktrackFolder"
+			BacktrackFolder.Name = "BACKTRACK"
 
 			spawn(function()
 				while toggled == true do
-					wait(0.05)
+					wait(0.025)
 					if script.Parent.Parent.DropDown.Selection.Text == "Super low" then
 						BTLEVEL = 100
 					end
@@ -1450,7 +1450,7 @@ local function onButtonActivated()
 								BacktrackPart.Position = v.Character.Head.Position
 								BacktrackPart.Orientation = v.Character.Head.Orientation
 								BacktrackPart.Size = Vector3.new(1, 1, 1)
-								BacktrackPart.Transparency = 0.5
+								BacktrackPart.Transparency = 0
 								BacktrackPart.Color = color
 								BacktrackPart.Material = Enum.Material.ForceField
 								BacktrackPart.Parent = BacktrackFolder
@@ -1717,7 +1717,7 @@ end
 
 
 --Boosted damage
-function hook_Hitpart(target)
+function Hitpart(target)
 	if not shootCooldown then
 		local Remote = game.ReplicatedStorage.Events['HitPart']
 		local Arguments = {
@@ -1944,8 +1944,8 @@ local function onButtonActivated()
 		rage = true
 		script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
 		autowallloop=runserv.Stepped:Connect(function()
-				if rage and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-					for i,v in next,plrs:GetPlayers() do
+			if rage and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+				for i,v in next,plrs:GetPlayers() do
 					if v and v ~= plr and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.TeamColor ~= plr.TeamColor then
 						pcall(function()
 							local partHit, posHit, damageModifier, wallbang = simulateHeadShot(v)
@@ -1967,7 +1967,7 @@ local function onButtonActivated()
 										end
 									)
 									if script.Parent.Parent.Hitpart.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
-										hook_Hitpart()
+										Hitpart(v)
 									end
 									if script.Parent.Parent.Parent.OtherTab.DT.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
 										Doubletap()
@@ -1990,7 +1990,7 @@ local function onButtonActivated()
 										end
 									)
 									if script.Parent.Parent.Hitpart.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
-										HitPart(v)
+										Hitpart(v)
 									end
 									if script.Parent.Parent.Parent.OtherTab.DT.BackgroundColor3 == Color3.fromRGB(181, 255, 42) then
 										Doubletap()
@@ -2576,7 +2576,7 @@ Frame91.BorderColor3 = Color3.new(0.262745, 0.262745, 0.262745)
 Frame91.BorderSizePixel = 2
 ImageButton92.Name = "OuterChams"
 ImageButton92.Parent = Frame91
-ImageButton92.Position = UDim2.new(0.0919999927, 0, 0.187769949, 0)
+ImageButton92.Position = UDim2.new(0.0919999927, 0, 0.215858296, 0)
 ImageButton92.Size = UDim2.new(0, 12, 0, 12)
 ImageButton92.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton92.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -2976,7 +2976,7 @@ TextLabel105.TextWrap = true
 TextLabel105.TextWrapped = true
 ImageButton106.Name = "Chams"
 ImageButton106.Parent = Frame91
-ImageButton106.Position = UDim2.new(0.0919999927, 0, 0.0828470215, 0)
+ImageButton106.Position = UDim2.new(0.0919999927, 0, 0.104753293, 0)
 ImageButton106.Size = UDim2.new(0, 12, 0, 12)
 ImageButton106.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton106.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -3594,7 +3594,7 @@ script:Destroy()
 end))
 ImageButton127.Name = "Hands"
 ImageButton127.Parent = Frame91
-ImageButton127.Position = UDim2.new(0.0919999927, 0, 0.290307909, 0)
+ImageButton127.Position = UDim2.new(0.0919999927, 0, 0.324437439, 0)
 ImageButton127.Size = UDim2.new(0, 12, 0, 12)
 ImageButton127.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton127.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -3631,142 +3631,73 @@ local function onButtonActivated()
 		toggled = true
 		script.Parent.BackgroundTransparency = 0
 		script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
-			game.Workspace.CurrentCamera.ChildAdded:Connect(function(ViewmodelFolder)
-				if ViewmodelFolder.Name == 'Arms' and toggled and script.Parent.Parent.DropDown.Selection.Text == ("Glass") and TP.TP.Value == false then
-					local ArmsColorsColor = script.Parent.Color.BackgroundColor3
-					local ArmsColorsWeaponsColor = script.Parent.Color2.BackgroundColor3
-							for i,v in pairs(ViewmodelFolder:GetChildren()) do
-								if v:IsA("Model") and v:FindFirstChild("Left Arm") and v:FindFirstChild("Right Arm") then
-									-- Arms Pointer
-									local RightArm = v["Right Arm"]
-									local LeftArm = v["Left Arm"]
-									-- Gloves Pointer
-									local RightGlove = RightArm:FindFirstChild("Glove") or RightArm:FindFirstChild("RGlove")
-									local LeftGlove = LeftArm:FindFirstChild("Glove") or LeftArm:FindFirstChild("LGlove")
-									-- Sleeves Pointer
-									local RightSleeve = RightArm:FindFirstChild("Sleeve") or nil
-									local LeftSleeve = LeftArm:FindFirstChild("Sleeve") or nil
+		game.Workspace.CurrentCamera.ChildAdded:Connect(function(ViewmodelFolder)
+			if ViewmodelFolder.Name == 'Arms' and toggled and script.Parent.Parent.DropDown.Selection.Text == "Forcefield" and TP.TP.Value == false then
+				local ArmsColorsColor = script.Parent.Color.BackgroundColor3
+				local ArmsColorsWeaponsColor = script.Parent.Color2.BackgroundColor3
+				for i,v in pairs(ViewmodelFolder:GetChildren()) do
+					if v:IsA("Model") and v:FindFirstChild("Left Arm") and v:FindFirstChild("Right Arm") then
+						-- Arms Pointer
+						local RightArm = v["Right Arm"]
+						local LeftArm = v["Left Arm"]
+						-- Gloves Pointer
+						local RightGlove = RightArm:FindFirstChild("Glove") or RightArm:FindFirstChild("RGlove")
+						local LeftGlove = LeftArm:FindFirstChild("Glove") or LeftArm:FindFirstChild("LGlove")
+						-- Sleeves Pointer
+						local RightSleeve = RightArm:FindFirstChild("Sleeve") or nil
+						local LeftSleeve = LeftArm:FindFirstChild("Sleeve") or nil
 
-									RightArm.Transparency = 0.9
-									RightArm.Reflectance = 0
-									RightArm.Mesh.TextureId = ""
-									RightArm.Color = ArmsColorsColor
-									RightArm.Material = "Glass"
+						RightArm.Transparency = 0.5
+						RightArm.Reflectance = 0
+						RightArm.Color = ArmsColorsColor
+						RightArm.Material = "ForceField"
 
-									LeftArm.Transparency = 0.9
-									LeftArm.Reflectance = 0
-									LeftArm.Mesh.TextureId = ""
-									LeftArm.Color = ArmsColorsColor
-									LeftArm.Material = "Glass"
+						LeftArm.Transparency = 0.5
+						LeftArm.Reflectance = 0
+						LeftArm.Color = ArmsColorsColor
+						LeftArm.Material = "ForceField"
 
-									RightGlove.Transparency = 0.9
-									RightGlove.Reflectance = 0
-									RightGlove.Mesh.TextureId = ""
-									RightGlove.Color = ArmsColorsColor
-									RightGlove.Material = "Glass"
-									
-									LeftGlove.Transparency = 0.9
-									LeftGlove.Reflectance = 0
-									LeftGlove.Mesh.TextureId = ""
-									LeftGlove.Color = ArmsColorsColor
-									LeftGlove.Material = "Glass"
+						RightGlove.Transparency = 0
+						RightGlove.Reflectance = 0
+						RightGlove.Color = Color3.fromRGB(255, 255, 255)
+						RightGlove.Material = "ForceField"
 
-									if RightSleeve and LeftSleeve then
+						LeftGlove.Transparency = 0
+						LeftGlove.Reflectance = 0
+						LeftGlove.Color = Color3.fromRGB(255, 255, 255)
+						LeftGlove.Material = "ForceField"
 
-										RightSleeve.Transparency = 0.9
-										RightSleeve.Reflectance = 0
-										RightSleeve.Mesh.TextureId = ""
-										RightSleeve.Color = ArmsColorsColor
-										RightSleeve.Material = "Glass"
+						if RightSleeve and LeftSleeve then
 
-										LeftSleeve.Transparency = 0.9
-										LeftSleeve.Reflectance = 0
-										LeftSleeve.Mesh.TextureId = ""
-										LeftSleeve.Color = ArmsColorsColor
-										LeftSleeve.Material = "Glass"
+							RightSleeve.Transparency = 0
+							RightSleeve.Reflectance = 0
+							RightSleeve.Color = Color3.fromRGB(255, 255, 255)
+							RightSleeve.Material = "ForceField"
 
-									end
-								end
-								if v:IsA("BasePart") and v.Name ~= ("Right Arm" or "Left Arm" or "Flash") and v.Transparency~=1 then -- Weapons Pointer
-									local Weapons = v
+							LeftSleeve.Transparency = 0
+							LeftSleeve.Reflectance = 0
+							LeftSleeve.Color = Color3.fromRGB(255, 255, 255)
+							LeftSleeve.Material = "ForceField"
 
-									if Weapons:IsA("MeshPart") then Weapons.TextureID = "" end
-									if Weapons:FindFirstChildOfClass("SpecialMesh") then Weapons:FindFirstChildOfClass("SpecialMesh").TextureId = "" end
-
-									Weapons.Transparency = 0.9
-									Weapons.Reflectance = 0
-									Weapons.Color = ArmsColorsWeaponsColor
-									Weapons.Material = "Glass"
-
-								end
-							end
-						end
-					if ViewmodelFolder.Name == 'Arms' and toggled and script.Parent.Parent.DropDown.Selection.Text == ("Forcefield") and TP.TP.Value == false then
-						local ArmsColorsColor = script.Parent.Color.BackgroundColor3
-						local ArmsColorsWeaponsColor = script.Parent.Color2.BackgroundColor3
-						for i,v in pairs(ViewmodelFolder:GetChildren()) do
-							if v:IsA("Model") and v:FindFirstChild("Left Arm") and v:FindFirstChild("Right Arm") then
-								-- Arms Pointer
-								local RightArm = v["Right Arm"]
-								local LeftArm = v["Left Arm"]
-								-- Gloves Pointer
-								local RightGlove = RightArm:FindFirstChild("Glove") or RightArm:FindFirstChild("RGlove")
-								local LeftGlove = LeftArm:FindFirstChild("Glove") or LeftArm:FindFirstChild("LGlove")
-								-- Sleeves Pointer
-								local RightSleeve = RightArm:FindFirstChild("Sleeve") or nil
-								local LeftSleeve = LeftArm:FindFirstChild("Sleeve") or nil
-
-								RightArm.Transparency = 0.5
-								RightArm.Reflectance = 0
-								RightArm.Color = ArmsColorsColor
-								RightArm.Material = "ForceField"
-
-								LeftArm.Transparency = 0.5
-								LeftArm.Reflectance = 0
-								LeftArm.Color = ArmsColorsColor
-								LeftArm.Material = "ForceField"
-
-								RightGlove.Transparency = 0
-								RightGlove.Reflectance = 0
-								RightGlove.Color = Color3.fromRGB(255, 255, 255)
-								RightGlove.Material = "ForceField"
-
-								LeftGlove.Transparency = 0
-								LeftGlove.Reflectance = 0
-								LeftGlove.Color = Color3.fromRGB(255, 255, 255)
-								LeftGlove.Material = "ForceField"
-
-								if RightSleeve and LeftSleeve then
-
-									RightSleeve.Transparency = 0
-									RightSleeve.Reflectance = 0
-									RightSleeve.Color = Color3.fromRGB(255, 255, 255)
-									RightSleeve.Material = "ForceField"
-
-									LeftSleeve.Transparency = 0
-									LeftSleeve.Reflectance = 0
-									LeftSleeve.Color = Color3.fromRGB(255, 255, 255)
-									LeftSleeve.Material = "ForceField"
-
-								end
-							end
-							if v:IsA("BasePart") and v.Name ~= ("Right Arm" or "Left Arm" or "Flash") and v.Transparency~=1 then -- Weapons Pointer
-								local Weapons = v
-
-								if Weapons:IsA("MeshPart") then Weapons.TextureID = "" end
-								if Weapons:FindFirstChildOfClass("SpecialMesh") then Weapons:FindFirstChildOfClass("SpecialMesh").TextureId = "" end
-
-								Weapons.Transparency = 0
-								Weapons.Reflectance = 0
-								Weapons.Color = ArmsColorsWeaponsColor
-								Weapons.Material = "ForceField"
-	
-							end
 						end
 					end
-					if ViewmodelFolder.Name == 'Arms' and toggled and script.Parent.Parent.DropDown.Selection.Text == ("Forcefield") and TP.TP.Value == false then
-						local ArmsColorsColor = script.Parent.Color.BackgroundColor3
-						local ArmsColorsWeaponsColor = script.Parent.Color2.BackgroundColor3
+					if v:IsA("BasePart") and v.Name ~= ("Right Arm" or "Left Arm" or "Flash") and v.Transparency~=1 then -- Weapons Pointer
+						local Weapons = v
+
+						if Weapons:IsA("MeshPart") then Weapons.TextureID = "" end
+						if Weapons:FindFirstChildOfClass("SpecialMesh") then Weapons:FindFirstChildOfClass("SpecialMesh").TextureId = "" end
+
+						Weapons.Transparency = 0
+						Weapons.Reflectance = 0
+						Weapons.Color = ArmsColorsWeaponsColor
+						Weapons.Material = "ForceField"
+
+					end
+				end
+			end
+			if ViewmodelFolder.Name == 'Arms' and toggled and script.Parent.Parent.DropDown.Selection.Text == "Glass" and TP.TP.Value == false then
+				local ArmsColorsColor = script.Parent.Color.BackgroundColor3
+				local ArmsColorsWeaponsColor = script.Parent.Color2.BackgroundColor3
 						for i,v in pairs(ViewmodelFolder:GetChildren()) do
 							if v:IsA("Model") and v:FindFirstChild("Left Arm") and v:FindFirstChild("Right Arm") then
 								-- Arms Pointer
@@ -3779,41 +3710,43 @@ local function onButtonActivated()
 								local RightSleeve = RightArm:FindFirstChild("Sleeve") or nil
 								local LeftSleeve = LeftArm:FindFirstChild("Sleeve") or nil
 
-								RightArm.Transparency = 0
+								RightArm.Transparency = 0.9
 								RightArm.Reflectance = 0
 								RightArm.Mesh.TextureId = ""
 								RightArm.Color = ArmsColorsColor
-								RightArm.Material = "Neon"
+								RightArm.Material = "Glass"
 
-								LeftArm.Transparency = 0
+								LeftArm.Transparency = 0.9
 								LeftArm.Reflectance = 0
 								LeftArm.Mesh.TextureId = ""
 								LeftArm.Color = ArmsColorsColor
-								LeftArm.Material = "Neon"
-
-								RightGlove.Transparency = 0
+								LeftArm.Material = "Glass"
+						
+								RightGlove.Transparency = 0.9
 								RightGlove.Reflectance = 0
+								RightGlove.Mesh.TextureId = ""
 								RightGlove.Color = ArmsColorsColor
-								RightGlove.Material = "Neon"
-
-								LeftGlove.Transparency = 0
+								RightGlove.Material = "Glass"
+									
+								LeftGlove.Transparency = 0.9
 								LeftGlove.Reflectance = 0
+								LeftGlove.Mesh.TextureId = ""
 								LeftGlove.Color = ArmsColorsColor
-								LeftGlove.Material = "Neon"
+								LeftGlove.Material = "Glass"
 
 								if RightSleeve and LeftSleeve then
 
-									RightSleeve.Transparency = 0
+									RightSleeve.Transparency = 0.9
 									RightSleeve.Reflectance = 0
 									RightSleeve.Mesh.TextureId = ""
 									RightSleeve.Color = ArmsColorsColor
-									RightSleeve.Material = "Neon"
-
-									LeftSleeve.Transparency = 0
+									RightSleeve.Material = "Glass"
+							
+									LeftSleeve.Transparency = 0.9
 									LeftSleeve.Reflectance = 0
 									LeftSleeve.Mesh.TextureId = ""
 									LeftSleeve.Color = ArmsColorsColor
-									LeftSleeve.Material = "Neon"
+									LeftSleeve.Material = "Glass"
 
 								end
 							end
@@ -3822,11 +3755,80 @@ local function onButtonActivated()
 
 								if Weapons:IsA("MeshPart") then Weapons.TextureID = "" end
 								if Weapons:FindFirstChildOfClass("SpecialMesh") then Weapons:FindFirstChildOfClass("SpecialMesh").TextureId = "" end
-								Weapons.Mesh.TextureId = ""
-								Weapons.Transparency = 0.2
+
+								Weapons.Transparency = 0.9
 								Weapons.Reflectance = 0
 								Weapons.Color = ArmsColorsWeaponsColor
-								Weapons.Material = "Neon"
+								Weapons.Material = "Glass"
+
+							end
+						end
+					end
+					if ViewmodelFolder.Name == 'Arms' and toggled and script.Parent.Parent.DropDown.Selection.Text == "Plastic" and TP.TP.Value == false then
+						local ArmsColorsColor = script.Parent.Color.BackgroundColor3
+						local ArmsColorsWeaponsColor = script.Parent.Color2.BackgroundColor3
+						for i,v in pairs(ViewmodelFolder:GetChildren()) do
+							if v:IsA("Model") and v:FindFirstChild("Left Arm") and v:FindFirstChild("Right Arm") then
+						-- Arms Pointer
+						local RightArm = v["Right Arm"]
+						local LeftArm = v["Left Arm"]
+						-- Gloves Pointer
+						local RightGlove = RightArm:FindFirstChild("Glove") or RightArm:FindFirstChild("RGlove")
+						local LeftGlove = LeftArm:FindFirstChild("Glove") or LeftArm:FindFirstChild("LGlove")
+						-- Sleeves Pointer
+						local RightSleeve = RightArm:FindFirstChild("Sleeve") or nil
+						local LeftSleeve = LeftArm:FindFirstChild("Sleeve") or nil
+
+						RightArm.Transparency = 0
+						RightArm.Reflectance = 0
+						RightArm.Mesh.TextureId = ""
+						RightArm.Color = ArmsColorsColor
+						RightArm.Material = "Neon"
+
+						LeftArm.Transparency = 0
+						LeftArm.Reflectance = 0
+						LeftArm.Mesh.TextureId = ""
+						LeftArm.Color = ArmsColorsColor
+						LeftArm.Material = "Neon"
+
+						RightGlove.Transparency = 0
+						RightGlove.Reflectance = 0
+						RightGlove.Mesh.TextureId = ""
+						RightGlove.Color = ArmsColorsColor
+						RightGlove.Material = "Neon"
+
+						LeftGlove.Transparency = 0
+						LeftGlove.Reflectance = 0
+						LeftGlove.Mesh.TextureId = ""
+						LeftGlove.Color = ArmsColorsColor
+						LeftGlove.Material = "Neon"
+
+						if RightSleeve and LeftSleeve then
+
+							RightSleeve.Transparency = 0
+							RightSleeve.Reflectance = 0
+							RightSleeve.Mesh.TextureId = ""
+							RightSleeve.Color = ArmsColorsColor
+							RightSleeve.Material = "Neon"
+
+							LeftSleeve.Transparency = 0
+							LeftSleeve.Reflectance = 0
+							LeftSleeve.Mesh.TextureId = ""
+							LeftSleeve.Color = ArmsColorsColor
+							LeftSleeve.Material = "Neon"
+
+						end
+					end
+					if v:IsA("BasePart") and v.Name ~= ("Right Arm" or "Left Arm" or "Flash") and v.Transparency~=1 then -- Weapons Pointer
+						local Weapons = v
+
+						if Weapons:IsA("MeshPart") then Weapons.TextureID = "" end
+						if Weapons:FindFirstChildOfClass("SpecialMesh") then Weapons:FindFirstChildOfClass("SpecialMesh").TextureId = "" end
+
+						Weapons.Transparency = 0
+						Weapons.Reflectance = 0
+						Weapons.Color = ArmsColorsWeaponsColor
+						Weapons.Material = "Neon"
 
 							end
 						end
@@ -4376,7 +4378,7 @@ script:Destroy()
 end))
 ImageButton150.Name = "LocalMaterial"
 ImageButton150.Parent = Frame91
-ImageButton150.Position = UDim2.new(0.0919999927, 0, 0.49571684, 0)
+ImageButton150.Position = UDim2.new(0.0919999927, 0, 0.541949749, 0)
 ImageButton150.Size = UDim2.new(0, 12, 0, 12)
 ImageButton150.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton150.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -4418,13 +4420,14 @@ local function onButtonActivated()
 			wait(1/100)
 			local Color = script.Parent.Color2.BackgroundColor3
 			if plr.Character then
-				if script.Parent.Parent.DropDown2.Selection.Text == ("Plastic") then
+				if script.Parent.Parent.DropDown2.Selection.Text == ("Glass") then
 					for _,v in pairs(plrs.LocalPlayer.Character:GetDescendants()) do 
-						if v.Name == "FakeHead" or v.Name == "LeftFoot" or v.Name == "LeftHand" or v.Name == "LeftLowerArm" or v.Name == "LeftLowerLeg" or v.Name == "LeftUpperArm" or v.Name == "LeftUpperLeg" or v.Name == "LowerTorso" or v.Name == "RightFoot" or v.Name == "RightHand" or v.Name == "RightLowerArm" or v.Name == "RightLowerLeg" or v.Name == "RightUpperArm" or v.Name == "RightUpperLeg" or v.Name == "UpperTorso" then
+						if v:IsA("MeshPart") or v:IsA("BasePart") then
 							pcall(function() 
-								v.Material = Enum.Material.Plastic
+								v.Material = Enum.Material.Glass
 								v.Color = Color
-								v.Transparency = 0
+								v.Mesh.TextureId = ""
+								v.Transparency = 0.7
 							end)
 						end
 					end
@@ -4432,7 +4435,7 @@ local function onButtonActivated()
 
 				if script.Parent.Parent.DropDown2.Selection.Text == ("Forcefield") then
 					for _,v in pairs(plrs.LocalPlayer.Character:GetDescendants()) do 
-						if v.Name == "FakeHead" or v.Name == "LeftFoot" or v.Name == "LeftHand" or v.Name == "LeftLowerArm" or v.Name == "LeftLowerLeg" or v.Name == "LeftUpperArm" or v.Name == "LeftUpperLeg" or v.Name == "LowerTorso" or v.Name == "RightFoot" or v.Name == "RightHand" or v.Name == "RightLowerArm" or v.Name == "RightLowerLeg" or v.Name == "RightUpperArm" or v.Name == "RightUpperLeg" or v.Name == "UpperTorso" then
+						if v:IsA("MeshPart") or v:IsA("BasePart") then
 							pcall(function() 
 								v.Material = Enum.Material.ForceField
 								v.Color = Color
@@ -4442,11 +4445,12 @@ local function onButtonActivated()
 					end
 				end
 
-				if script.Parent.Parent.DropDown2.Selection.Text == ("Neon") then
+				if script.Parent.Parent.DropDown2.Selection.Text == ("Plastic") then
 					for _,v in pairs(plrs.LocalPlayer.Character:GetDescendants()) do 
-						if v.Name == "FakeHead" or v.Name == "LeftFoot" or v.Name == "LeftHand" or v.Name == "LeftLowerArm" or v.Name == "LeftLowerLeg" or v.Name == "LeftUpperArm" or v.Name == "LeftUpperLeg" or v.Name == "LowerTorso" or v.Name == "RightFoot" or v.Name == "RightHand" or v.Name == "RightLowerArm" or v.Name == "RightLowerLeg" or v.Name == "RightUpperArm" or v.Name == "RightUpperLeg" or v.Name == "UpperTorso" then
+						if v:IsA("MeshPart") or v:IsA("BasePart") then
 							pcall(function() 
 								v.Material = Enum.Material.Neon
+								v.Mesh.TextureId = ""
 								v.Color = Color
 								v.Transparency = 0
 							end)
@@ -4734,8 +4738,8 @@ script:Destroy()
 end))
 Frame163.Name = "DropDown"
 Frame163.Parent = Frame91
-Frame163.Position = UDim2.new(0.195000127, 0, 0.631838143, 0)
-Frame163.Size = UDim2.new(0.61330384, 0, 0.0374166928, 0)
+Frame163.Position = UDim2.new(0.195000127, 0, 0.686091185, 0)
+Frame163.Size = UDim2.new(0.61330384, 0, 0.039621301, 0)
 Frame163.BackgroundColor = BrickColor.new("Really black")
 Frame163.BackgroundColor3 = Color3.new(0, 0, 0)
 Frame163.BackgroundTransparency = 1
@@ -4760,9 +4764,9 @@ TextButton164.TextWrap = true
 TextButton164.TextWrapped = true
 Frame165.Name = "Menu"
 Frame165.Parent = Frame163
-Frame165.Position = UDim2.new(0, 0, -5.02099991, 3)
+Frame165.Position = UDim2.new(0, 0, -5.020998, 3)
 Frame165.Visible = false
-Frame165.Size = UDim2.new(1, 0, 8.36900043, 0)
+Frame165.Size = UDim2.new(1, 0, 8.15549469, 0)
 Frame165.BackgroundColor = BrickColor.new("Black")
 Frame165.BackgroundColor3 = Color3.new(0.172549, 0.172549, 0.172549)
 Frame165.BorderColor = BrickColor.new("Dirt brown")
@@ -4771,7 +4775,7 @@ Frame165.BorderSizePixel = 3
 Frame165.ZIndex = 4
 TextButton166.Name = "Button"
 TextButton166.Parent = Frame165
-TextButton166.Size = UDim2.new(1, 0, -0.0132636894, 35)
+TextButton166.Size = UDim2.new(1, 0, 0.00100000005, 36)
 TextButton166.BackgroundColor = BrickColor.new("Black metallic")
 TextButton166.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton166.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -4787,8 +4791,8 @@ TextButton166.TextWrap = true
 TextButton166.TextWrapped = true
 TextButton167.Name = "Button2"
 TextButton167.Parent = Frame165
-TextButton167.Position = UDim2.new(0, 0, 0.324363798, 0)
-TextButton167.Size = UDim2.new(1, 0, 0.000518417335, 35)
+TextButton167.Position = UDim2.new(0, 0, 0.315252721, 0)
+TextButton167.Size = UDim2.new(1, 0, 0.00100000005, 36)
 TextButton167.BackgroundColor = BrickColor.new("Black metallic")
 TextButton167.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton167.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -4804,8 +4808,8 @@ TextButton167.TextWrap = true
 TextButton167.TextWrapped = true
 TextButton168.Name = "Button3"
 TextButton168.Parent = Frame165
-TextButton168.Position = UDim2.new(0, 0, 0.66185379, 0)
-TextButton168.Size = UDim2.new(1, 0, 0.000518417335, 35)
+TextButton168.Position = UDim2.new(0, 0, 0.643631637, 0)
+TextButton168.Size = UDim2.new(1, 0, 0.00100000005, 36)
 TextButton168.BackgroundColor = BrickColor.new("Black metallic")
 TextButton168.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton168.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -4861,8 +4865,8 @@ end
 end))
 Frame170.Name = "DropDown2"
 Frame170.Parent = Frame91
-Frame170.Position = UDim2.new(0.195000127, 0, 0.837494195, 0)
-Frame170.Size = UDim2.new(0.61330384, 0, 0.0374166928, 0)
+Frame170.Position = UDim2.new(0.195000127, 0, 0.900592685, 0)
+Frame170.Size = UDim2.new(0.61330384, 0, 0.039621301, 0)
 Frame170.BackgroundColor = BrickColor.new("Really black")
 Frame170.BackgroundColor3 = Color3.new(0, 0, 0)
 Frame170.BackgroundTransparency = 1
@@ -4887,9 +4891,9 @@ TextButton171.TextWrap = true
 TextButton171.TextWrapped = true
 Frame172.Name = "Menu"
 Frame172.Parent = Frame170
-Frame172.Position = UDim2.new(0, 0, -5.02099991, 3)
+Frame172.Position = UDim2.new(0, 0, -5.020998, 3)
 Frame172.Visible = false
-Frame172.Size = UDim2.new(1, 0, 8.36900043, 0)
+Frame172.Size = UDim2.new(1, 0, 8.15549469, 0)
 Frame172.BackgroundColor = BrickColor.new("Black")
 Frame172.BackgroundColor3 = Color3.new(0.172549, 0.172549, 0.172549)
 Frame172.BorderColor = BrickColor.new("Dirt brown")
@@ -4898,7 +4902,7 @@ Frame172.BorderSizePixel = 3
 Frame172.ZIndex = 4
 TextButton173.Name = "Button"
 TextButton173.Parent = Frame172
-TextButton173.Size = UDim2.new(1, 0, -0.0132636894, 35)
+TextButton173.Size = UDim2.new(1, 0, 0.00100000005, 36)
 TextButton173.BackgroundColor = BrickColor.new("Black metallic")
 TextButton173.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton173.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -4914,8 +4918,8 @@ TextButton173.TextWrap = true
 TextButton173.TextWrapped = true
 TextButton174.Name = "Button2"
 TextButton174.Parent = Frame172
-TextButton174.Position = UDim2.new(0, 0, 0.324363798, 0)
-TextButton174.Size = UDim2.new(1, 0, 0.000518417335, 35)
+TextButton174.Position = UDim2.new(0, 0, 0.315252721, 0)
+TextButton174.Size = UDim2.new(1, 0, 0.00100000005, 36)
 TextButton174.BackgroundColor = BrickColor.new("Black metallic")
 TextButton174.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton174.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -4931,8 +4935,8 @@ TextButton174.TextWrap = true
 TextButton174.TextWrapped = true
 TextButton175.Name = "Button3"
 TextButton175.Parent = Frame172
-TextButton175.Position = UDim2.new(0, 0, 0.66185379, 0)
-TextButton175.Size = UDim2.new(1, 0, 0.000518417335, 35)
+TextButton175.Position = UDim2.new(0, 0, 0.643631637, 0)
+TextButton175.Size = UDim2.new(1, 0, 0.00100000005, 36)
 TextButton175.BackgroundColor = BrickColor.new("Black metallic")
 TextButton175.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton175.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -4997,8 +5001,8 @@ Frame177.BorderColor3 = Color3.new(0.262745, 0.262745, 0.262745)
 Frame177.BorderSizePixel = 2
 Frame178.Name = "DropDown2"
 Frame178.Parent = Frame177
-Frame178.Position = UDim2.new(0.193000078, 0, 0.593226016, 0)
-Frame178.Size = UDim2.new(0.61330384, 0, 0.0176829584, 0)
+Frame178.Position = UDim2.new(0.193000078, 0, 0.665640831, 0)
+Frame178.Size = UDim2.new(0.61330384, 0, 0.0190607514, 0)
 Frame178.BackgroundColor = BrickColor.new("Institutional white")
 Frame178.BackgroundColor3 = Color3.new(1, 1, 1)
 Frame178.BackgroundTransparency = 1
@@ -5022,9 +5026,9 @@ TextButton179.TextWrap = true
 TextButton179.TextWrapped = true
 Frame180.Name = "Menu"
 Frame180.Parent = Frame178
-Frame180.Position = UDim2.new(0, 0, -5.02099848, 3)
+Frame180.Position = UDim2.new(0, 0, -5.02099895, 3)
 Frame180.Visible = false
-Frame180.Size = UDim2.new(1, 0, 15.9816628, 0)
+Frame180.Size = UDim2.new(1, 0, 16.0231686, 0)
 Frame180.BackgroundColor = BrickColor.new("Black")
 Frame180.BackgroundColor3 = Color3.new(0.172549, 0.172549, 0.172549)
 Frame180.BorderColor = BrickColor.new("Dirt brown")
@@ -5033,8 +5037,8 @@ Frame180.BorderSizePixel = 3
 Frame180.ZIndex = 10
 TextButton181.Name = "Button6"
 TextButton181.Parent = Frame180
-TextButton181.Position = UDim2.new(-6.98491931e-10, 0, 0.848056555, 0)
-TextButton181.Size = UDim2.new(1, 0, -0.00380410277, 35)
+TextButton181.Position = UDim2.new(0, 0, 0.825999975, 0)
+TextButton181.Size = UDim2.new(1, 0, 0.00100000005, 35)
 TextButton181.BackgroundColor = BrickColor.new("Black metallic")
 TextButton181.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton181.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -5050,8 +5054,8 @@ TextButton181.TextWrap = true
 TextButton181.TextWrapped = true
 TextButton182.Name = "Button5"
 TextButton182.Parent = Frame180
-TextButton182.Position = UDim2.new(0, 0, 0.676689744, 0)
-TextButton182.Size = UDim2.new(1, 0, 0, 35)
+TextButton182.Position = UDim2.new(0, 0, 0.661000013, 0)
+TextButton182.Size = UDim2.new(1, 0, 0.00100000005, 35)
 TextButton182.BackgroundColor = BrickColor.new("Black metallic")
 TextButton182.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton182.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -5067,8 +5071,8 @@ TextButton182.TextWrap = true
 TextButton182.TextWrapped = true
 TextButton183.Name = "Button4"
 TextButton183.Parent = Frame180
-TextButton183.Position = UDim2.new(-6.98491931e-10, 0, 0.509711742, 0)
-TextButton183.Size = UDim2.new(1, 0, -0.00380410277, 35)
+TextButton183.Position = UDim2.new(-0, 0, 0.495000005, 0)
+TextButton183.Size = UDim2.new(1, 0, 0.00100000005, 35)
 TextButton183.BackgroundColor = BrickColor.new("Black metallic")
 TextButton183.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton183.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -5084,8 +5088,8 @@ TextButton183.TextWrap = true
 TextButton183.TextWrapped = true
 TextButton184.Name = "Button3"
 TextButton184.Parent = Frame180
-TextButton184.Position = UDim2.new(0, 0, 0.338344872, 0)
-TextButton184.Size = UDim2.new(1, 0, 0, 35)
+TextButton184.Position = UDim2.new(0, 0, 0.330000013, 0)
+TextButton184.Size = UDim2.new(1, 0, 0.00100000005, 35)
 TextButton184.BackgroundColor = BrickColor.new("Black metallic")
 TextButton184.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton184.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -5101,7 +5105,7 @@ TextButton184.TextWrap = true
 TextButton184.TextWrapped = true
 TextButton185.Name = "Button"
 TextButton185.Parent = Frame180
-TextButton185.Size = UDim2.new(1, 0, 0, 35)
+TextButton185.Size = UDim2.new(1, 0, 0.00100000005, 35)
 TextButton185.BackgroundColor = BrickColor.new("Black metallic")
 TextButton185.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton185.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -5117,8 +5121,8 @@ TextButton185.TextWrap = true
 TextButton185.TextWrapped = true
 TextButton186.Name = "Button2"
 TextButton186.Parent = Frame180
-TextButton186.Position = UDim2.new(-2.32830644e-10, 0, 0.1713669, 0)
-TextButton186.Size = UDim2.new(1, 0, -0.00380410277, 35)
+TextButton186.Position = UDim2.new(0, 0, 0.165000007, 0)
+TextButton186.Size = UDim2.new(1, 0, 0.00100000005, 35)
 TextButton186.BackgroundColor = BrickColor.new("Black metallic")
 TextButton186.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton186.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -5174,7 +5178,7 @@ end
 end))
 ImageButton188.Name = "Ambience"
 ImageButton188.Parent = Frame177
-ImageButton188.Position = UDim2.new(0.0920001343, 0, 0.38506788, 0)
+ImageButton188.Position = UDim2.new(0.0920001343, 0, 0.441263884, 0)
 ImageButton188.Size = UDim2.new(0, 12, 0, 12)
 ImageButton188.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton188.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -5518,7 +5522,7 @@ script:Destroy()
 end))
 ImageButton201.Name = "NoSky"
 ImageButton201.Parent = Frame177
-ImageButton201.Position = UDim2.new(0.0920001343, 0, 0.433797419, 0)
+ImageButton201.Position = UDim2.new(0.0920001343, 0, 0.493790299, 0)
 ImageButton201.Size = UDim2.new(0, 12, 0, 12)
 ImageButton201.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton201.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -5631,8 +5635,8 @@ button.Activated:Connect(onButtonActivated)
 end))
 TextLabel204.Name = "Effects"
 TextLabel204.Parent = Frame177
-TextLabel204.Position = UDim2.new(0.0361394361, 0, -0.0159183666, 0)
-TextLabel204.Size = UDim2.new(0, 75, 0, 10)
+TextLabel204.Position = UDim2.new(0.0361394361, 0, -0.0159183573, 0)
+TextLabel204.Size = UDim2.new(0, 75, 0, 11)
 TextLabel204.Active = true
 TextLabel204.BackgroundColor = BrickColor.new("Really black")
 TextLabel204.BackgroundColor3 = Color3.new(0.0862745, 0.0862745, 0.0862745)
@@ -5650,7 +5654,7 @@ TextLabel204.TextWrap = true
 TextLabel204.TextWrapped = true
 ImageButton205.Name = "NoFlash"
 ImageButton205.Parent = Frame177
-ImageButton205.Position = UDim2.new(0.0920001343, 0, 0.0347656086, 0)
+ImageButton205.Position = UDim2.new(0.0920001343, 0, 0.0636673421, 0)
 ImageButton205.Size = UDim2.new(0, 12, 0, 12)
 ImageButton205.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton205.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -5707,7 +5711,7 @@ button.Activated:Connect(onButtonActivated)
 end))
 ImageButton208.Name = "NoSmoke"
 ImageButton208.Parent = Frame177
-ImageButton208.Position = UDim2.new(0.0920001343, 0, 0.0840479657, 0)
+ImageButton208.Position = UDim2.new(0.0920001343, 0, 0.116789535, 0)
 ImageButton208.Size = UDim2.new(0, 12, 0, 12)
 ImageButton208.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton208.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -5784,7 +5788,7 @@ button.Activated:Connect(onButtonActivated)
 end))
 ImageButton211.Name = "NoFog"
 ImageButton211.Parent = Frame177
-ImageButton211.Position = UDim2.new(0.0920001343, 0, 0.132450789, 0)
+ImageButton211.Position = UDim2.new(0.0920001343, 0, 0.168963745, 0)
 ImageButton211.Size = UDim2.new(0, 12, 0, 12)
 ImageButton211.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton211.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -5837,7 +5841,7 @@ button.Activated:Connect(onButtonActivated)
 end))
 ImageButton214.Name = "NoScope"
 ImageButton214.Parent = Frame177
-ImageButton214.Position = UDim2.new(0.0920001343, 0, 0.181156933, 0)
+ImageButton214.Position = UDim2.new(0.0920001343, 0, 0.221465006, 0)
 ImageButton214.Size = UDim2.new(0, 12, 0, 12)
 ImageButton214.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton214.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -5902,7 +5906,7 @@ button.Activated:Connect(onButtonActivated)
 end))
 ImageButton217.Name = "ThirdPerson"
 ImageButton217.Parent = Frame177
-ImageButton217.Position = UDim2.new(0.0920001343, 0, 0.229862899, 0)
+ImageButton217.Position = UDim2.new(0.0920001343, 0, 0.273965925, 0)
 ImageButton217.Size = UDim2.new(0, 12, 0, 12)
 ImageButton217.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton217.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -5995,7 +5999,7 @@ BoolValue221.Name = "TP"
 BoolValue221.Parent = ImageButton217
 ImageButton222.Name = "Brightness"
 ImageButton222.Parent = Frame177
-ImageButton222.Position = UDim2.new(0.0920001343, 0, 0.278569132, 0)
+ImageButton222.Position = UDim2.new(0.0920001343, 0, 0.326467097, 0)
 ImageButton222.Size = UDim2.new(0, 12, 0, 12)
 ImageButton222.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton222.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -6087,8 +6091,8 @@ button.Activated:Connect(onButtonActivated)
 end))
 Frame225.Name = "DropDown"
 Frame225.Parent = Frame177
-Frame225.Position = UDim2.new(0.193000078, 0, 0.440515518, 0)
-Frame225.Size = UDim2.new(0.61330384, 0, 0.0176829584, 0)
+Frame225.Position = UDim2.new(0.193000078, 0, 0.501031876, 0)
+Frame225.Size = UDim2.new(0.61330384, 0, 0.0190607514, 0)
 Frame225.BackgroundColor = BrickColor.new("Institutional white")
 Frame225.BackgroundColor3 = Color3.new(1, 1, 1)
 Frame225.BackgroundTransparency = 1
@@ -6112,9 +6116,9 @@ TextButton226.TextWrap = true
 TextButton226.TextWrapped = true
 Frame227.Name = "Menu"
 Frame227.Parent = Frame225
-Frame227.Position = UDim2.new(0, 0, -5.02099991, 3)
+Frame227.Position = UDim2.new(0, 0, -5.02099895, 3)
 Frame227.Visible = false
-Frame227.Size = UDim2.new(1, 0, 8.36900043, 0)
+Frame227.Size = UDim2.new(1, 0, 8.08697224, 0)
 Frame227.BackgroundColor = BrickColor.new("Black")
 Frame227.BackgroundColor3 = Color3.new(0.172549, 0.172549, 0.172549)
 Frame227.BorderColor = BrickColor.new("Dirt brown")
@@ -6123,8 +6127,8 @@ Frame227.BorderSizePixel = 3
 Frame227.ZIndex = 10
 TextButton228.Name = "Button3"
 TextButton228.Parent = Frame227
-TextButton228.Position = UDim2.new(0, 0, 0.650191247, 0)
-TextButton228.Size = UDim2.new(1, 0, -0.0572455749, 35)
+TextButton228.Position = UDim2.new(0, 0, 0.663925588, 0)
+TextButton228.Size = UDim2.new(1, 0, 0.00795208011, 35)
 TextButton228.BackgroundColor = BrickColor.new("Black metallic")
 TextButton228.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton228.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -6140,7 +6144,7 @@ TextButton228.TextWrap = true
 TextButton228.TextWrapped = true
 TextButton229.Name = "Button"
 TextButton229.Parent = Frame227
-TextButton229.Size = UDim2.new(1, 0, 0, 35)
+TextButton229.Size = UDim2.new(1, 0, 0.00795208011, 35)
 TextButton229.BackgroundColor = BrickColor.new("Black metallic")
 TextButton229.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton229.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -6156,8 +6160,8 @@ TextButton229.TextWrap = true
 TextButton229.TextWrapped = true
 TextButton230.Name = "Button2"
 TextButton230.Parent = Frame227
-TextButton230.Position = UDim2.new(0, 0, 0.328280449, 0)
-TextButton230.Size = UDim2.new(1, 0, -0.00380410277, 35)
+TextButton230.Position = UDim2.new(0, 0, 0.335214883, 0)
+TextButton230.Size = UDim2.new(1, 0, 0.00795208011, 35)
 TextButton230.BackgroundColor = BrickColor.new("Black metallic")
 TextButton230.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton230.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -6213,8 +6217,8 @@ end
 end))
 Frame232.Name = "X"
 Frame232.Parent = Frame177
-Frame232.Position = UDim2.new(0.546641529, -150, 0.574468434, 0)
-Frame232.Size = UDim2.new(0, 259, 0, 21)
+Frame232.Position = UDim2.new(0.546641529, -150, 0.645421982, 0)
+Frame232.Size = UDim2.new(0, 259, 0, 22)
 Frame232.BackgroundColor = BrickColor.new("Really black")
 Frame232.BackgroundColor3 = Color3.new(0.0784314, 0.0784314, 0.0784314)
 Frame232.BorderSizePixel = 0
@@ -6284,8 +6288,8 @@ NumberValue237.Name = "Percent"
 NumberValue237.Parent = Frame232
 Frame238.Name = "Y"
 Frame238.Parent = Frame177
-Frame238.Position = UDim2.new(0.546641529, -150, 0.642370582, 0)
-Frame238.Size = UDim2.new(0, 259, 0, 21)
+Frame238.Position = UDim2.new(0.546641529, -150, 0.718614817, 0)
+Frame238.Size = UDim2.new(0, 259, 0, 22)
 Frame238.BackgroundColor = BrickColor.new("Really black")
 Frame238.BackgroundColor3 = Color3.new(0.0784314, 0.0784314, 0.0784314)
 Frame238.BorderSizePixel = 0
@@ -6355,7 +6359,7 @@ NumberValue243.Name = "Percent"
 NumberValue243.Parent = Frame238
 ImageButton244.Name = "ViewmodelOffset"
 ImageButton244.Parent = Frame177
-ImageButton244.Position = UDim2.new(0.0920001343, 0, 0.544657886, 0)
+ImageButton244.Position = UDim2.new(0.0920001343, 0, 0.613288581, 0)
 ImageButton244.Size = UDim2.new(0, 12, 0, 12)
 ImageButton244.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton244.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -6444,8 +6448,8 @@ button.Activated:Connect(onButtonActivated)
 end))
 Frame247.Name = "Z"
 Frame247.Parent = Frame177
-Frame247.Position = UDim2.new(0.546641529, -150, 0.711658359, 0)
-Frame247.Size = UDim2.new(0, 259, 0, 21)
+Frame247.Position = UDim2.new(0.546641529, -150, 0.793300986, 0)
+Frame247.Size = UDim2.new(0, 259, 0, 22)
 Frame247.BackgroundColor = BrickColor.new("Really black")
 Frame247.BackgroundColor3 = Color3.new(0.0784314, 0.0784314, 0.0784314)
 Frame247.BorderSizePixel = 0
@@ -6524,7 +6528,7 @@ Frame253.BorderColor3 = Color3.new(0.262745, 0.262745, 0.262745)
 Frame253.BorderSizePixel = 2
 ImageButton254.Name = "Tracers"
 ImageButton254.Parent = Frame253
-ImageButton254.Position = UDim2.new(0.0920001343, 0, 0.690530956, 0)
+ImageButton254.Position = UDim2.new(0.0920001343, 0, 0.768701732, 0)
 ImageButton254.Size = UDim2.new(0, 12, 0, 12)
 ImageButton254.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton254.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -6882,7 +6886,7 @@ script:Destroy()
 end))
 ImageButton267.Name = "Grenade"
 ImageButton267.Parent = Frame253
-ImageButton267.Position = UDim2.new(0.0920001343, 0, 0.603020072, 0)
+ImageButton267.Position = UDim2.new(0.0920001343, 0, 0.673338711, 0)
 ImageButton267.Size = UDim2.new(0, 12, 0, 12)
 ImageButton267.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton267.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -7176,7 +7180,7 @@ script:Destroy()
 end))
 ImageButton279.Name = "Weapons"
 ImageButton279.Parent = Frame253
-ImageButton279.Position = UDim2.new(0.0920001343, 0, 0.427997917, 0)
+ImageButton279.Position = UDim2.new(0.0920001343, 0, 0.482611835, 0)
 ImageButton279.Size = UDim2.new(0, 12, 0, 12)
 ImageButton279.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton279.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -7470,7 +7474,7 @@ script:Destroy()
 end))
 ImageButton291.Name = "BombGui"
 ImageButton291.Parent = Frame253
-ImageButton291.Position = UDim2.new(0.0920001343, 0, 0.515509188, 0)
+ImageButton291.Position = UDim2.new(0.0920001343, 0, 0.577975571, 0)
 ImageButton291.Size = UDim2.new(0, 12, 0, 12)
 ImageButton291.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton291.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -7497,7 +7501,7 @@ TextLabel292.TextWrapped = true
 TextLabel292.TextXAlignment = Enum.TextXAlignment.Left
 ImageButton293.Name = "Cross"
 ImageButton293.Parent = Frame253
-ImageButton293.Position = UDim2.new(0.0920001343, 0, 0.252975911, 0)
+ImageButton293.Position = UDim2.new(0.0920001343, 0, 0.291885257, 0)
 ImageButton293.Size = UDim2.new(0, 12, 0, 12)
 ImageButton293.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton293.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -7555,7 +7559,7 @@ TextLabel295.TextWrapped = true
 TextLabel295.TextXAlignment = Enum.TextXAlignment.Left
 ImageButton296.Name = "Hostages"
 ImageButton296.Parent = Frame253
-ImageButton296.Position = UDim2.new(0.0920001343, 0, 0.337986767, 0)
+ImageButton296.Position = UDim2.new(0.0920001343, 0, 0.384524047, 0)
 ImageButton296.Size = UDim2.new(0, 12, 0, 12)
 ImageButton296.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton296.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -7849,7 +7853,7 @@ script:Destroy()
 end))
 ImageButton308.Name = "Spectators"
 ImageButton308.Parent = Frame253
-ImageButton308.Position = UDim2.new(0.0920001343, 0, 0.162964672, 0)
+ImageButton308.Position = UDim2.new(0.0920001343, 0, 0.193797335, 0)
 ImageButton308.Size = UDim2.new(0, 12, 0, 12)
 ImageButton308.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton308.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -7876,7 +7880,7 @@ TextLabel309.TextWrapped = true
 TextLabel309.TextXAlignment = Enum.TextXAlignment.Left
 ImageButton310.Name = "Bomb"
 ImageButton310.Parent = Frame253
-ImageButton310.Position = UDim2.new(0.0920001343, 0, 0.07795389, 0)
+ImageButton310.Position = UDim2.new(0.0920001343, 0, 0.101158604, 0)
 ImageButton310.Size = UDim2.new(0, 12, 0, 12)
 ImageButton310.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton310.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -8170,8 +8174,8 @@ script:Destroy()
 end))
 TextLabel322.Name = "Other ESP"
 TextLabel322.Parent = Frame253
-TextLabel322.Position = UDim2.new(0.0337809473, 0, -0.0332033709, 0)
-TextLabel322.Size = UDim2.new(0, 112, 0, 10)
+TextLabel322.Position = UDim2.new(0.0337809436, 0, -0.038227655, 0)
+TextLabel322.Size = UDim2.new(0, 112, 0, 15)
 TextLabel322.Active = true
 TextLabel322.BackgroundColor = BrickColor.new("Really black")
 TextLabel322.BackgroundColor3 = Color3.new(0.0862745, 0.0862745, 0.0862745)
@@ -8198,7 +8202,7 @@ Frame323.BorderColor3 = Color3.new(0.262745, 0.262745, 0.262745)
 Frame323.BorderSizePixel = 2
 ImageButton324.Name = "HealthBar"
 ImageButton324.Parent = Frame323
-ImageButton324.Position = UDim2.new(0.0896226391, 0, 0.171714589, 0)
+ImageButton324.Position = UDim2.new(0.0896226391, 0, 0.196615472, 0)
 ImageButton324.Size = UDim2.new(0, 12, 0, 12)
 ImageButton324.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton324.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -8352,7 +8356,7 @@ TextLabel326.TextWrapped = true
 TextLabel326.TextXAlignment = Enum.TextXAlignment.Left
 ImageButton327.Name = "Ammo"
 ImageButton327.Parent = Frame323
-ImageButton327.Position = UDim2.new(0.0896414965, 0, 0.446669906, 0)
+ImageButton327.Position = UDim2.new(0.0896414965, 0, 0.49808082, 0)
 ImageButton327.Size = UDim2.new(0, 12, 0, 12)
 ImageButton327.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton327.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -8754,7 +8758,7 @@ script:Destroy()
 end))
 ImageButton340.Name = "Name"
 ImageButton340.Parent = Frame323
-ImageButton340.Position = UDim2.new(0.0896414965, 0, 0.218402565, 0)
+ImageButton340.Position = UDim2.new(0.0896414965, 0, 0.24780491, 0)
 ImageButton340.Size = UDim2.new(0, 12, 0, 12)
 ImageButton340.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton340.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -9161,7 +9165,7 @@ script:Destroy()
 end))
 ImageButton353.Name = "Health"
 ImageButton353.Parent = Frame323
-ImageButton353.Position = UDim2.new(0.0896226391, 0, 0.125680953, 0)
+ImageButton353.Position = UDim2.new(0.0896226391, 0, 0.146143496, 0)
 ImageButton353.Size = UDim2.new(0, 12, 0, 12)
 ImageButton353.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton353.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -9572,7 +9576,7 @@ TextLabel365.TextWrapped = true
 TextLabel365.TextXAlignment = Enum.TextXAlignment.Left
 ImageButton366.Name = "Weapon"
 ImageButton366.Parent = Frame323
-ImageButton366.Position = UDim2.new(0.0896414965, 0, 0.309227258, 0)
+ImageButton366.Position = UDim2.new(0.0896414965, 0, 0.347386599, 0)
 ImageButton366.Size = UDim2.new(0, 12, 0, 12)
 ImageButton366.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton366.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -9980,7 +9984,7 @@ script:Destroy()
 end))
 ImageButton379.Name = "Hitmarker"
 ImageButton379.Parent = Frame323
-ImageButton379.Position = UDim2.new(0.0896414965, 0, 0.355041504, 0)
+ImageButton379.Position = UDim2.new(0.0896414965, 0, 0.397618026, 0)
 ImageButton379.Size = UDim2.new(0, 12, 0, 12)
 ImageButton379.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton379.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -10048,7 +10052,7 @@ button.Activated:Connect(onButtonActivated)
 end))
 ImageButton382.Name = "Box"
 ImageButton382.Parent = Frame323
-ImageButton382.Position = UDim2.new(0.0896226391, 0, 0.0811817721, 0)
+ImageButton382.Position = UDim2.new(0.0896226391, 0, 0.0973538756, 0)
 ImageButton382.Size = UDim2.new(0, 12, 0, 12)
 ImageButton382.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton382.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -10477,7 +10481,7 @@ script:Destroy()
 end))
 ImageButton395.Name = "Distance"
 ImageButton395.Parent = Frame323
-ImageButton395.Position = UDim2.new(0.0896414965, 0, 0.263854742, 0)
+ImageButton395.Position = UDim2.new(0.0896414965, 0, 0.29763943, 0)
 ImageButton395.Size = UDim2.new(0, 12, 0, 12)
 ImageButton395.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton395.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -10888,7 +10892,7 @@ script:Destroy()
 end))
 ImageButton408.Name = "Hitsound"
 ImageButton408.Parent = Frame323
-ImageButton408.Position = UDim2.new(0.0896414965, 0, 0.400855839, 0)
+ImageButton408.Position = UDim2.new(0.0896414965, 0, 0.447849542, 0)
 ImageButton408.Size = UDim2.new(0, 12, 0, 12)
 ImageButton408.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton408.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -10949,7 +10953,7 @@ button.Activated:Connect(onButtonActivated)
 end))
 ImageButton411.Name = "Bones"
 ImageButton411.Parent = Frame323
-ImageButton411.Position = UDim2.new(0.0896414965, 0, 0.492484301, 0)
+ImageButton411.Position = UDim2.new(0.0896414965, 0, 0.548312485, 0)
 ImageButton411.Size = UDim2.new(0, 12, 0, 12)
 ImageButton411.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton411.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -11243,7 +11247,7 @@ script:Destroy()
 end))
 ImageButton423.Name = "Teammates"
 ImageButton423.Parent = Frame323
-ImageButton423.Position = UDim2.new(0.0896226391, 0, 0.0384011045, 0)
+ImageButton423.Position = UDim2.new(0.0896226391, 0, 0.0504484847, 0)
 ImageButton423.Size = UDim2.new(0, 12, 0, 12)
 ImageButton423.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton423.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
@@ -12722,9 +12726,9 @@ TextButton497.TextWrap = true
 TextButton497.TextWrapped = true
 Frame498.Name = "Menu"
 Frame498.Parent = Frame496
-Frame498.Position = UDim2.new(0, 0, -5.02100086, 3)
+Frame498.Position = UDim2.new(0, 0, -5.02100039, 3)
 Frame498.Visible = false
-Frame498.Size = UDim2.new(1, 0, 17.8091831, 0)
+Frame498.Size = UDim2.new(1, 0, 15.8829641, 0)
 Frame498.BackgroundColor = BrickColor.new("Black")
 Frame498.BackgroundColor3 = Color3.new(0.172549, 0.172549, 0.172549)
 Frame498.BorderColor = BrickColor.new("Dirt brown")
@@ -12733,8 +12737,8 @@ Frame498.BorderSizePixel = 3
 Frame498.ZIndex = 4
 TextButton499.Name = "Button5"
 TextButton499.Parent = Frame498
-TextButton499.Position = UDim2.new(0, 0, 0.665165007, 0)
-TextButton499.Size = UDim2.new(1, 0, 0.00513475854, 35)
+TextButton499.Position = UDim2.new(-0.000154441645, 0, 0.666213989, 0)
+TextButton499.Size = UDim2.new(1, 0, 0.00848960504, 35)
 TextButton499.BackgroundColor = BrickColor.new("Black metallic")
 TextButton499.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton499.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -12750,8 +12754,8 @@ TextButton499.TextWrap = true
 TextButton499.TextWrapped = true
 TextButton500.Name = "Button4"
 TextButton500.Parent = Frame498
-TextButton500.Position = UDim2.new(0, 0, 0.497021973, 0)
-TextButton500.Size = UDim2.new(1, 0, 0.00513475854, 35)
+TextButton500.Position = UDim2.new(0, 0, 0.501937449, 0)
+TextButton500.Size = UDim2.new(1, 0, 0.00848960504, 35)
 TextButton500.BackgroundColor = BrickColor.new("Black metallic")
 TextButton500.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton500.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -12767,8 +12771,7 @@ TextButton500.TextWrap = true
 TextButton500.TextWrapped = true
 TextButton501.Name = "Button"
 TextButton501.Parent = Frame498
-TextButton501.Position = UDim2.new(0, 0, 0.0046573896, 0)
-TextButton501.Size = UDim2.new(1, 0, 0.00513475854, 35)
+TextButton501.Size = UDim2.new(1, 0, 0.00848960504, 35)
 TextButton501.BackgroundColor = BrickColor.new("Black metallic")
 TextButton501.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton501.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -12784,8 +12787,8 @@ TextButton501.TextWrap = true
 TextButton501.TextWrapped = true
 TextButton502.Name = "Button2"
 TextButton502.Parent = Frame498
-TextButton502.Position = UDim2.new(0, 0, 0.161560729, 0)
-TextButton502.Size = UDim2.new(1, 0, 0.00513475854, 35)
+TextButton502.Position = UDim2.new(0, 0, 0.167697996, 0)
+TextButton502.Size = UDim2.new(1, 0, 0.00848960504, 35)
 TextButton502.BackgroundColor = BrickColor.new("Black metallic")
 TextButton502.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton502.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -12801,8 +12804,8 @@ TextButton502.TextWrap = true
 TextButton502.TextWrapped = true
 TextButton503.Name = "Button3"
 TextButton503.Parent = Frame498
-TextButton503.Position = UDim2.new(0, 0, 0.329136074, 0)
-TextButton503.Size = UDim2.new(1, 0, 0.00513475854, 35)
+TextButton503.Position = UDim2.new(0, 0, 0.335395873, 0)
+TextButton503.Size = UDim2.new(1, 0, 0.00848960504, 35)
 TextButton503.BackgroundColor = BrickColor.new("Black metallic")
 TextButton503.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton503.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -12818,8 +12821,8 @@ TextButton503.TextWrap = true
 TextButton503.TextWrapped = true
 TextButton504.Name = "Button5"
 TextButton504.Parent = Frame498
-TextButton504.Position = UDim2.new(0, 0, 0.831856549, 0)
-TextButton504.Size = UDim2.new(1, 0, 0.00513475854, 35)
+TextButton504.Position = UDim2.new(0, 0, 0.836176932, 0)
+TextButton504.Size = UDim2.new(1, 0, 0.00848960504, 35)
 TextButton504.BackgroundColor = BrickColor.new("Black metallic")
 TextButton504.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton504.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -13894,8 +13897,8 @@ button.Activated:Connect(onButtonActivated)
 end))
 ImageButton545.Name = "Crashgame"
 ImageButton545.Parent = Frame510
-ImageButton545.Position = UDim2.new(0.190641582, 0, 0.529945016, 0)
-ImageButton545.Size = UDim2.new(0, 259, 0, 39)
+ImageButton545.Position = UDim2.new(0.190641582, 0, 0.523480356, 0)
+ImageButton545.Size = UDim2.new(0, 259, 0, 33)
 ImageButton545.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton545.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
 ImageButton545.BorderColor = BrickColor.new("Really black")
@@ -14049,7 +14052,7 @@ end))
 ImageButton548.Name = "Skin"
 ImageButton548.Parent = Frame510
 ImageButton548.Position = UDim2.new(0.190641582, 0, 0.483734131, 0)
-ImageButton548.Size = UDim2.new(0, 259, 0, 39)
+ImageButton548.Size = UDim2.new(0, 259, 0, 33)
 ImageButton548.BackgroundColor = BrickColor.new("Dark taupe")
 ImageButton548.BackgroundColor3 = Color3.new(0.290196, 0.290196, 0.290196)
 ImageButton548.BorderColor = BrickColor.new("Really black")
@@ -14083,9 +14086,6 @@ local toggled = false
 local function onButtonActivated()
 	if toggled == false then
 		toggled = true
-		script.Parent.BackgroundTransparency = 0
-		script.Parent.BackgroundColor3 = Color3.fromRGB(44, 44, 44)
-
 		local LocalPlayer = game:GetService("Players").LocalPlayer
 		local Client = getsenv(game.Players.LocalPlayer.PlayerGui.Client)
 		local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -14628,13 +14628,13 @@ local function onButtonActivated()
 		
 		local isUnlocked
 		
-		local mt = getrawmetatable(game)
-		local oldNamecall = mt.__namecall
-		setreadonly(mt, false)
+		local SKINTABLE = getrawmetatable(game)
+		local oldNamecall = SKINTABLE.__namecall
+		setreadonly(SKINTABLE, false)
 		
 		local isUnlocked
 		
-		mt.__namecall = newcclosure(function(self, ...)
+		SKINTABLE.__namecall = newcclosure(function(self, ...)
 			local args = {...}
 			if getnamecallmethod() == "InvokeServer" and tostring(self) == "Hugh" then
 				return
@@ -14673,7 +14673,7 @@ local function onButtonActivated()
 			return oldNamecall(self, ...)
 		end)
 		
-		setreadonly(mt, true)
+		setreadonly(SKINTABLE, true)
 		
 		Client.CurrentInventory = allSkins
 		
@@ -14682,8 +14682,6 @@ local function onButtonActivated()
 		LocalPlayer.SkinFolder.CTFolder:Destroy()
 		TClone.Parent = LocalPlayer.SkinFolder
 		CTClone.Parent = LocalPlayer.SkinFolder
-				
-	
 	else
 		
 	end
@@ -16295,7 +16293,7 @@ TextLabel652.TextXAlignment = Enum.TextXAlignment.Left
 TextLabel653.Name = "Fake lag"
 TextLabel653.Parent = Frame648
 TextLabel653.Position = UDim2.new(0.0361394361, 0, -0.00979359541, 0)
-TextLabel653.Size = UDim2.new(0, 97, 0, 10)
+TextLabel653.Size = UDim2.new(0, 97, 0, 11)
 TextLabel653.Active = true
 TextLabel653.BackgroundColor = BrickColor.new("Really black")
 TextLabel653.BackgroundColor3 = Color3.new(0.0862745, 0.0862745, 0.0862745)
@@ -16368,9 +16366,9 @@ TextButton657.TextWrap = true
 TextButton657.TextWrapped = true
 Frame658.Name = "Menu"
 Frame658.Parent = Frame656
-Frame658.Position = UDim2.new(0, 0, -5.02099895, 3)
+Frame658.Position = UDim2.new(0, 0, -5.02099848, 3)
 Frame658.Visible = false
-Frame658.Size = UDim2.new(1, 0, 6.33255768, 0)
+Frame658.Size = UDim2.new(1, 0, 7.07017469, 0)
 Frame658.BackgroundColor = BrickColor.new("Black")
 Frame658.BackgroundColor3 = Color3.new(0.172549, 0.172549, 0.172549)
 Frame658.BorderColor = BrickColor.new("Dirt brown")
@@ -16379,8 +16377,7 @@ Frame658.BorderSizePixel = 3
 Frame658.ZIndex = 4
 TextButton659.Name = "Button"
 TextButton659.Parent = Frame658
-TextButton659.Position = UDim2.new(0.00247294386, 0, 0.0324343704, 0)
-TextButton659.Size = UDim2.new(0.99368149, 0, -0.0368355587, 35)
+TextButton659.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton659.BackgroundColor = BrickColor.new("Black metallic")
 TextButton659.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton659.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -16396,8 +16393,8 @@ TextButton659.TextWrap = true
 TextButton659.TextWrapped = true
 TextButton660.Name = "Button2"
 TextButton660.Parent = Frame658
-TextButton660.Position = UDim2.new(0.00247294386, 0, 0.373999953, 0)
-TextButton660.Size = UDim2.new(0.99752754, 0, -0.0601450615, 35)
+TextButton660.Position = UDim2.new(0, 0, 0.335000008, 0)
+TextButton660.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton660.BackgroundColor = BrickColor.new("Black metallic")
 TextButton660.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton660.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -16413,8 +16410,8 @@ TextButton660.TextWrap = true
 TextButton660.TextWrapped = true
 TextButton661.Name = "Button3"
 TextButton661.Parent = Frame658
-TextButton661.Position = UDim2.new(0, 0, 0.692255855, 0)
-TextButton661.Size = UDim2.new(1, 0, -0.0738480985, 35)
+TextButton661.Position = UDim2.new(0, 0, 0.670000017, 0)
+TextButton661.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton661.BackgroundColor = BrickColor.new("Black metallic")
 TextButton661.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton661.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -16603,9 +16600,9 @@ TextButton673.TextWrap = true
 TextButton673.TextWrapped = true
 Frame674.Name = "Menu"
 Frame674.Parent = Frame672
-Frame674.Position = UDim2.new(0, 0, -5.02099895, 3)
+Frame674.Position = UDim2.new(0, 0, -5.02099991, 3)
 Frame674.Visible = false
-Frame674.Size = UDim2.new(1, 0, 14.5319309, 0)
+Frame674.Size = UDim2.new(1, 0, 14.4834223, 0)
 Frame674.BackgroundColor = BrickColor.new("Black")
 Frame674.BackgroundColor3 = Color3.new(0.172549, 0.172549, 0.172549)
 Frame674.BorderColor = BrickColor.new("Dirt brown")
@@ -16615,7 +16612,7 @@ Frame674.ZIndex = 4
 TextButton675.Name = "Button5"
 TextButton675.Parent = Frame674
 TextButton675.Position = UDim2.new(0, 0, -0.00125242095, 0)
-TextButton675.Size = UDim2.new(1, 0, -0.0248066951, 35)
+TextButton675.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton675.BackgroundColor = BrickColor.new("Black metallic")
 TextButton675.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton675.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -16632,7 +16629,7 @@ TextButton675.TextWrapped = true
 TextButton676.Name = "Button4"
 TextButton676.Parent = Frame674
 TextButton676.Position = UDim2.new(0, 0, 0.286888033, 0)
-TextButton676.Size = UDim2.new(1, 0, -0.0248066951, 35)
+TextButton676.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton676.BackgroundColor = BrickColor.new("Black metallic")
 TextButton676.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton676.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -16649,7 +16646,7 @@ TextButton676.TextWrapped = true
 TextButton677.Name = "Button"
 TextButton677.Parent = Frame674
 TextButton677.Position = UDim2.new(0, 0, 0.14072068, 0)
-TextButton677.Size = UDim2.new(1, 0, -0.0248066951, 35)
+TextButton677.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton677.BackgroundColor = BrickColor.new("Black metallic")
 TextButton677.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton677.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -16666,7 +16663,7 @@ TextButton677.TextWrapped = true
 TextButton678.Name = "Button2"
 TextButton678.Parent = Frame674
 TextButton678.Position = UDim2.new(0, 0, 0.572992861, 0)
-TextButton678.Size = UDim2.new(1, 0, -0.0248066951, 35)
+TextButton678.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton678.BackgroundColor = BrickColor.new("Black metallic")
 TextButton678.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton678.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -16683,7 +16680,7 @@ TextButton678.TextWrapped = true
 TextButton679.Name = "Button6"
 TextButton679.Parent = Frame674
 TextButton679.Position = UDim2.new(0, 0, 0.429973274, 0)
-TextButton679.Size = UDim2.new(1, 0, -0.0248066951, 35)
+TextButton679.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton679.BackgroundColor = BrickColor.new("Black metallic")
 TextButton679.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton679.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -16700,7 +16697,7 @@ TextButton679.TextWrapped = true
 TextButton680.Name = "Button3"
 TextButton680.Parent = Frame674
 TextButton680.Position = UDim2.new(0, 0, 0.7134009, 0)
-TextButton680.Size = UDim2.new(1, 0, -0.0248066951, 35)
+TextButton680.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton680.BackgroundColor = BrickColor.new("Black metallic")
 TextButton680.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton680.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -16717,7 +16714,7 @@ TextButton680.TextWrapped = true
 TextButton681.Name = "Button7"
 TextButton681.Parent = Frame674
 TextButton681.Position = UDim2.new(0, 0, 0.853809237, 0)
-TextButton681.Size = UDim2.new(1, 0, -0.0248066951, 35)
+TextButton681.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton681.BackgroundColor = BrickColor.new("Black metallic")
 TextButton681.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton681.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -17042,7 +17039,7 @@ Frame694.BorderSizePixel = 3
 Frame694.ZIndex = 4
 TextButton695.Name = "Button"
 TextButton695.Parent = Frame694
-TextButton695.Size = UDim2.new(1, 0, -0.0539217964, 35)
+TextButton695.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton695.BackgroundColor = BrickColor.new("Black metallic")
 TextButton695.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton695.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -17058,8 +17055,8 @@ TextButton695.TextWrap = true
 TextButton695.TextWrapped = true
 TextButton696.Name = "Button2"
 TextButton696.Parent = Frame694
-TextButton696.Position = UDim2.new(0, 0, 0.340108037, 0)
-TextButton696.Size = UDim2.new(1, 0, -0.0510674417, 35)
+TextButton696.Position = UDim2.new(0, 0, 0.332039982, 0)
+TextButton696.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton696.BackgroundColor = BrickColor.new("Black metallic")
 TextButton696.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton696.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -17075,8 +17072,8 @@ TextButton696.TextWrap = true
 TextButton696.TextWrapped = true
 TextButton697.Name = "Button3"
 TextButton697.Parent = Frame694
-TextButton697.Position = UDim2.new(0, 0, 0.681444347, 0)
-TextButton697.Size = UDim2.new(1, 0, -0.0738480985, 35)
+TextButton697.Position = UDim2.new(0, 0, 0.665382683, 0)
+TextButton697.Size = UDim2.new(1, 0, -0.00100000005, 35)
 TextButton697.BackgroundColor = BrickColor.new("Black metallic")
 TextButton697.BackgroundColor3 = Color3.new(0.121569, 0.121569, 0.121569)
 TextButton697.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
@@ -17132,8 +17129,8 @@ end
 end))
 TextLabel699.Name = "Anti Aimbot angles"
 TextLabel699.Parent = Frame671
-TextLabel699.Position = UDim2.new(0.0361394361, 0, -0.00979359634, 0)
-TextLabel699.Size = UDim2.new(0, 202, 0, 10)
+TextLabel699.Position = UDim2.new(0.0361394361, 0, -0.00979360193, 0)
+TextLabel699.Size = UDim2.new(0, 202, 0, 11)
 TextLabel699.Active = true
 TextLabel699.BackgroundColor = BrickColor.new("Really black")
 TextLabel699.BackgroundColor3 = Color3.new(0.0862745, 0.0862745, 0.0862745)
@@ -18578,7 +18575,7 @@ TextLabel748.Text = "69:42:69"
 TextLabel748.TextColor = BrickColor.new("Institutional white")
 TextLabel748.TextColor3 = Color3.new(1, 1, 1)
 TextLabel748.TextSize = 13
-LocalScript749.Name = "Setup"
+LocalScript749.Name = "setup"
 LocalScript749.Parent = ScreenGui0
 table.insert(cors,sandbox(LocalScript749,function()
 local valid_chars = {}
@@ -18599,6 +18596,13 @@ set_valid('a', 'z')
 set_valid('A', 'Z')
 set_valid('0', '9')
 
+
+print("[bloxsense] Injected")
+local runservice = game:GetService("RunService")
+game["Run Service"].RenderStepped:Connect(function()
+	script.Parent.Name = random_string(16)	
+end)
+
 local Meta = getrawmetatable(game)
 setreadonly(Meta,false)
 local oldNamecall = Meta.__namecall
@@ -18611,19 +18615,7 @@ Meta.__namecall = newcclosure(function(self,...)
 	end
 	return oldNamecall(self,unpack(Arguments))
 end)
-
-game.ReplicatedFirst:WaitForChild("Session"):Destroy()
 makefolder("bloxsense configs")
-print("[bloxsense] Injected")
-local runservice = game:GetService("RunService")
-game["Run Service"].RenderStepped:Connect(function()
-	script.Parent.Name = random_string(16)	
-end)
-
-
-
-
-
 end))
 for i,v in pairs(mas:GetChildren()) do
 	local GUI = v
@@ -18637,6 +18629,5 @@ for i,v in pairs(cors) do
 		pcall(v)
 	end)
 end
-
-end
+end    
 syn.create_secure_function("Bloxsense", E())
