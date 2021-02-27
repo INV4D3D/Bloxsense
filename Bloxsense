@@ -1,4 +1,4 @@
-function E()
+function create()
 function sandbox(var,func)
 	local env = getfenv(func)
 	local newenv = setmetatable({},{
@@ -17881,9 +17881,9 @@ makefolder("bloxsense configs")
 end))
 Frame740.Name = "Watermark"
 Frame740.Parent = ScreenGui0
-Frame740.Position = UDim2.new(0.878000021, 0, 0.00499999989, 0)
+Frame740.Position = UDim2.new(0.866999984, 0, -0.00999999978, 0)
 Frame740.Visible = false
-Frame740.Size = UDim2.new(0, 304, 0, 19)
+Frame740.Size = UDim2.new(0, 338, 0, 19)
 Frame740.Active = true
 Frame740.BackgroundColor = BrickColor.new("Really black")
 Frame740.BackgroundColor3 = Color3.new(0.0862745, 0.0862745, 0.0862745)
@@ -17904,16 +17904,16 @@ TextLabel741.BorderSizePixel = 0
 TextLabel741.ZIndex = 999999999
 TextLabel741.Font = Enum.Font.Code
 TextLabel741.FontSize = Enum.FontSize.Size14
-TextLabel741.Text = "bloxsense      |        |        |"
+TextLabel741.Text = "[bloxsense]       |        |        |"
 TextLabel741.TextColor = BrickColor.new("Institutional white")
 TextLabel741.TextColor3 = Color3.new(1, 1, 1)
 TextLabel741.TextSize = 13
 TextLabel741.TextXAlignment = Enum.TextXAlignment.Left
-LocalScript742.Name = "gradient"
+LocalScript742.Name = "color"
 LocalScript742.Parent = TextLabel741
 table.insert(cors,sandbox(LocalScript742,function()
 local UIGradient = Instance.new("UIGradient")
-UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(184, 255, 69)), ColorSequenceKeypoint.new(0.06, Color3.fromRGB(184, 255, 69)), ColorSequenceKeypoint.new(0.06, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))}
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(0.07, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(0.07, Color3.fromRGB(181, 255, 42)), ColorSequenceKeypoint.new(0.15, Color3.fromRGB(181, 255, 42)), ColorSequenceKeypoint.new(0.15, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))}
 UIGradient.Parent = script.Parent
 script:Destroy()
 end))
@@ -17977,27 +17977,26 @@ spawn(function()
 end)
 
 
-
 RunService:BindToRenderStep("Rainbow", 1000, function()
 	local hue = tick() % t / t
-	local color = fromHSV(hue, 1, 1)
+	local color = fromHSV(hue, 0.65, 1)
 	B.TextColor3 = color
 end)
 RunService:BindToRenderStep("Rainbow", 1000, function()
 	local hue = tick() % t / t
-	local color = fromHSV(hue, 1, 1)
+	local color = fromHSV(hue, 0.65, 1)
 	wait(0.3)
 	E.TextColor3 = color
 end)
 RunService:BindToRenderStep("Rainbow", 1000, function()
 	local hue = tick() % t / t
-	local color = fromHSV(hue, 1, 1)
+	local color = fromHSV(hue, 0.65, 1)
 	wait(0.6)
 	T.TextColor3 = color
 end)
 RunService:BindToRenderStep("Rainbow", 1000, function()
 	local hue = tick() % t / t
-	local color = fromHSV(hue, 1, 1)
+	local color = fromHSV(hue, 0.65, 1)
 	wait(0.9)
 	A.TextColor3 = color
 end)
@@ -18005,8 +18004,8 @@ end)
 end))
 TextLabel744.Name = "B"
 TextLabel744.Parent = Frame740
-TextLabel744.Position = UDim2.new(0.222156227, 0, -0.0842108503, 1)
-TextLabel744.Size = UDim2.new(0, 16, 0, 20)
+TextLabel744.Position = UDim2.new(0.236167043, 0, -0.00263093645, 1)
+TextLabel744.Size = UDim2.new(0, 22, 0, 18)
 TextLabel744.BackgroundColor = BrickColor.new("Really black")
 TextLabel744.BackgroundColor3 = Color3.new(0, 0, 0)
 TextLabel744.BackgroundTransparency = 1
@@ -18022,8 +18021,8 @@ TextLabel744.TextWrap = true
 TextLabel744.TextWrapped = true
 TextLabel745.Name = "E"
 TextLabel745.Parent = Frame740
-TextLabel745.Position = UDim2.new(0.254072279, 0, -0.0842108503, 1)
-TextLabel745.Size = UDim2.new(0, 16, 0, 20)
+TextLabel745.Position = UDim2.new(0.267218411, 0, -0.00263093645, 1)
+TextLabel745.Size = UDim2.new(0, 22, 0, 18)
 TextLabel745.BackgroundColor = BrickColor.new("Really black")
 TextLabel745.BackgroundColor3 = Color3.new(0, 0, 0)
 TextLabel745.BackgroundTransparency = 1
@@ -18039,8 +18038,8 @@ TextLabel745.TextWrap = true
 TextLabel745.TextWrapped = true
 TextLabel746.Name = "T"
 TextLabel746.Parent = Frame740
-TextLabel746.Position = UDim2.new(0.284287006, 0, -0.0842108503, 1)
-TextLabel746.Size = UDim2.new(0, 16, 0, 20)
+TextLabel746.Position = UDim2.new(0.29661715, 0, -0.00263093645, 1)
+TextLabel746.Size = UDim2.new(0, 22, 0, 18)
 TextLabel746.BackgroundColor = BrickColor.new("Really black")
 TextLabel746.BackgroundColor3 = Color3.new(0, 0, 0)
 TextLabel746.BackgroundTransparency = 1
@@ -18056,8 +18055,8 @@ TextLabel746.TextWrap = true
 TextLabel746.TextWrapped = true
 TextLabel747.Name = "A"
 TextLabel747.Parent = Frame740
-TextLabel747.Position = UDim2.new(0.31068942, 0, -0.0840004385, 1)
-TextLabel747.Size = UDim2.new(0, 16, 0, 20)
+TextLabel747.Position = UDim2.new(0.322307527, 0, -0.00239653327, 1)
+TextLabel747.Size = UDim2.new(0, 22, 0, 18)
 TextLabel747.BackgroundColor = BrickColor.new("Really black")
 TextLabel747.BackgroundColor3 = Color3.new(0, 0, 0)
 TextLabel747.BackgroundTransparency = 1
@@ -18073,8 +18072,8 @@ TextLabel747.TextWrap = true
 TextLabel747.TextWrapped = true
 TextLabel748.Name = "FPS"
 TextLabel748.Parent = Frame740
-TextLabel748.Position = UDim2.new(0.363321006, 0, 0.0500006415, 0)
-TextLabel748.Size = UDim2.new(-1.32808399, 467, 1, 0)
+TextLabel748.Position = UDim2.new(0.390021861, 0, 0.0500006415, 0)
+TextLabel748.Size = UDim2.new(-1.19138265, 467, 1, 0)
 TextLabel748.BackgroundColor = BrickColor.new("Institutional white")
 TextLabel748.BackgroundColor3 = Color3.new(1, 1, 1)
 TextLabel748.BackgroundTransparency = 1
@@ -18088,8 +18087,8 @@ TextLabel748.TextColor3 = Color3.new(1, 1, 1)
 TextLabel748.TextSize = 13
 TextLabel749.Name = "MB"
 TextLabel749.Parent = Frame740
-TextLabel749.Position = UDim2.new(0.571421146, 0, 0.0500006415, 0)
-TextLabel749.Size = UDim2.new(-1.32669687, 467, 1, 0)
+TextLabel749.Position = UDim2.new(0.580296278, 0, 0.0500006415, 0)
+TextLabel749.Size = UDim2.new(-1.19820404, 467, 1, 0)
 TextLabel749.BackgroundColor = BrickColor.new("Institutional white")
 TextLabel749.BackgroundColor3 = Color3.new(1, 1, 1)
 TextLabel749.BackgroundTransparency = 1
@@ -18103,8 +18102,8 @@ TextLabel749.TextColor3 = Color3.new(1, 1, 1)
 TextLabel749.TextSize = 13
 TextLabel750.Name = "Time"
 TextLabel750.Parent = Frame740
-TextLabel750.Position = UDim2.new(0.780908465, 0, 0.0500006415, 0)
-TextLabel750.Size = UDim2.new(-1.31709254, 467, 1, 0)
+TextLabel750.Position = UDim2.new(0.763749182, 0, 0.0500006415, 0)
+TextLabel750.Size = UDim2.new(-1.14540625, 467, 1, 0)
 TextLabel750.BackgroundColor = BrickColor.new("Institutional white")
 TextLabel750.BackgroundColor3 = Color3.new(1, 1, 1)
 TextLabel750.BackgroundTransparency = 1
