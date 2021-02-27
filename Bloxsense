@@ -2865,14 +2865,6 @@ local function onButtonActivated()
 					chamPlr(v)
 				end
 			end
-			plrs.ChildAdded:connect(function(v)
-				v.CharacterAdded:connect(function(char)
-					wait(5)
-					if plrChams and plr.Team ~= v.Team and v.Character and v ~= plr then
-						chamPlr(v)
-					end
-				end)
-			end)
 		end		
 	else
 		toggled = false
@@ -4382,14 +4374,6 @@ local function onButtonActivated()
 					chamPlr(v)
 				end
 			end
-			plrs.ChildAdded:connect(function(v)
-				v.CharacterAdded:connect(function(char)
-					wait(5)
-					if toggled and plr.Team ~= v.Team and v.Character and v ~= plr then
-						chamPlr(v)
-					end
-				end)
-			end)
 		end		
 	else
 		toggled = false
@@ -10803,28 +10787,16 @@ local toggled = false
 local espFolder3 = Instance.new("Folder",game.CoreGui)
 espFolder3.Name = "Bones"
 
-
-
 function chamPlr(plr)
 	if plr.Character then
 		for i,v in next,plr.Character:GetChildren() do
 			if v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" and v.Name ~= "Gun" then
-				local BoxHandleAdornment1 = Instance.new("BoxHandleAdornment")
-				BoxHandleAdornment1.Name = "LeftHand"
-				BoxHandleAdornment1.Parent = espFolder3
-				BoxHandleAdornment1.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment1.Transparency = 0.10000000149012
-				BoxHandleAdornment1.Size = Vector3.new(0.100000001, 0.400000006, 0.100000001)
-				BoxHandleAdornment1.Color3 = Color3.new(1, 1, 1)
-				BoxHandleAdornment1.ZIndex = 10
-				BoxHandleAdornment1.Adornee = v.Parent.LeftHand
-				BoxHandleAdornment1.AlwaysOnTop = true
-				
+				local transparency = 0
 				local BoxHandleAdornment2 = Instance.new("BoxHandleAdornment")
 				BoxHandleAdornment2.Name = "LeftLowerArm"
 				BoxHandleAdornment2.Parent = espFolder3
 				BoxHandleAdornment2.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment2.Transparency = 0.10000000149012
+				BoxHandleAdornment2.Transparency = transparency
 				BoxHandleAdornment2.Size = Vector3.new(0.100000001, 0.699999988, 0.100000001)
 				BoxHandleAdornment2.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment2.ZIndex = 10
@@ -10836,7 +10808,7 @@ function chamPlr(plr)
 				BoxHandleAdornment3.Name = "LeftLowerLeg"
 				BoxHandleAdornment3.Parent = espFolder3
 				BoxHandleAdornment3.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment3.Transparency = 0.10000000149012
+				BoxHandleAdornment3.Transparency = transparency
 				BoxHandleAdornment3.Size = Vector3.new(0.100000001, 0.899999976, 0.100000001)
 				BoxHandleAdornment3.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment3.ZIndex = 10
@@ -10848,7 +10820,7 @@ function chamPlr(plr)
 				BoxHandleAdornment4.Name = "LeftUpperArm"
 				BoxHandleAdornment4.Parent = espFolder3
 				BoxHandleAdornment4.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment4.Transparency = 0.10000000149012
+				BoxHandleAdornment4.Transparency = transparency
 				BoxHandleAdornment4.Size = Vector3.new(0.100000001, 0.800000012, 0.100000001)
 				BoxHandleAdornment4.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment4.ZIndex = 10
@@ -10860,7 +10832,7 @@ function chamPlr(plr)
 				BoxHandleAdornment5.Name = "LeftUpperLeg"
 				BoxHandleAdornment5.Parent = espFolder3
 				BoxHandleAdornment5.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment5.Transparency = 0.10000000149012
+				BoxHandleAdornment5.Transparency = transparency
 				BoxHandleAdornment5.Size = Vector3.new(0.100000001, 1, 0.100000001)
 				BoxHandleAdornment5.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment5.ZIndex = 10
@@ -10872,7 +10844,7 @@ function chamPlr(plr)
 				BoxHandleAdornment6.Name = "LowerTorso"
 				BoxHandleAdornment6.Parent = espFolder3
 				BoxHandleAdornment6.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment6.Transparency = 0.10000000149012
+				BoxHandleAdornment6.Transparency = transparency
 				BoxHandleAdornment6.Size = Vector3.new(1.10000002, 0.100000001, 0.100000001)
 				BoxHandleAdornment6.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment6.ZIndex = 10
@@ -10880,33 +10852,11 @@ function chamPlr(plr)
 				BoxHandleAdornment6.AlwaysOnTop = true
 				BoxHandleAdornment6.SizeRelativeOffset = Vector3.new(0, -0.100000001, 0)
 				
-				local BoxHandleAdornment7 = Instance.new("BoxHandleAdornment")
-				BoxHandleAdornment7.Name = "RightFoot"
-				BoxHandleAdornment7.Parent = espFolder3
-				BoxHandleAdornment7.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment7.Transparency = 0.10000000149012
-				BoxHandleAdornment7.Size = Vector3.new(0.100000001, 0.400000006, 0.100000001)
-				BoxHandleAdornment7.Color3 = Color3.new(1, 1, 1)
-				BoxHandleAdornment7.ZIndex = 10
-				BoxHandleAdornment7.Adornee = v.Parent.RightFoot
-				BoxHandleAdornment7.AlwaysOnTop = true
-				
-				local BoxHandleAdornment8 = Instance.new("BoxHandleAdornment")
-				BoxHandleAdornment8.Name = "RightHand"
-				BoxHandleAdornment8.Parent = espFolder3
-				BoxHandleAdornment8.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment8.Transparency = 0.10000000149012
-				BoxHandleAdornment8.Size = Vector3.new(0.100000001, 0.400000006, 0.100000001)
-				BoxHandleAdornment8.Color3 = Color3.new(1, 1, 1)
-				BoxHandleAdornment8.ZIndex = 10
-				BoxHandleAdornment8.Adornee = v.Parent.RightHand
-				BoxHandleAdornment8.AlwaysOnTop = true
-				
 				local BoxHandleAdornment9 = Instance.new("BoxHandleAdornment")
 				BoxHandleAdornment9.Name = "RightLowerArm"
 				BoxHandleAdornment9.Parent = espFolder3
 				BoxHandleAdornment9.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment9.Transparency = 0.10000000149012
+				BoxHandleAdornment9.Transparency = transparency
 				BoxHandleAdornment9.Size = Vector3.new(0.100000001, 0.699999988, 0.100000001)
 				BoxHandleAdornment9.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment9.ZIndex = 10
@@ -10918,7 +10868,7 @@ function chamPlr(plr)
 				BoxHandleAdornment10.Name = "RightLowerLeg"
 				BoxHandleAdornment10.Parent = espFolder3
 				BoxHandleAdornment10.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment10.Transparency = 0.10000000149012
+				BoxHandleAdornment10.Transparency = transparency
 				BoxHandleAdornment10.Size = Vector3.new(0.100000001, 0.899999976, 0.100000001)
 				BoxHandleAdornment10.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment10.ZIndex = 10
@@ -10930,7 +10880,7 @@ function chamPlr(plr)
 				BoxHandleAdornment11.Name = "RightUpperArm"
 				BoxHandleAdornment11.Parent = espFolder3
 				BoxHandleAdornment11.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment11.Transparency = 0.10000000149012
+				BoxHandleAdornment11.Transparency = transparency
 				BoxHandleAdornment11.Size = Vector3.new(0.100000001, 0.800000012, 0.100000001)
 				BoxHandleAdornment11.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment11.ZIndex = 10
@@ -10942,7 +10892,7 @@ function chamPlr(plr)
 				BoxHandleAdornment12.Name = "RightUpperLeg"
 				BoxHandleAdornment12.Parent = espFolder3
 				BoxHandleAdornment12.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment12.Transparency = 0.10000000149012
+				BoxHandleAdornment12.Transparency = transparency
 				BoxHandleAdornment12.Size = Vector3.new(0.100000001, 1, 0.100000001)
 				BoxHandleAdornment12.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment12.ZIndex = 10
@@ -10954,29 +10904,19 @@ function chamPlr(plr)
 				BoxHandleAdornment13.Name = "UpperTorso"
 				BoxHandleAdornment13.Parent = espFolder3
 				BoxHandleAdornment13.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment13.Transparency = 0.10000000149012
+				BoxHandleAdornment13.Transparency = transparency
 				BoxHandleAdornment13.Size = Vector3.new(0.100000001, 2, 0.100000001)
 				BoxHandleAdornment13.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment13.ZIndex = 10
 				BoxHandleAdornment13.Adornee = v.Parent.UpperTorso
 				BoxHandleAdornment13.AlwaysOnTop = true
 				
-				local BoxHandleAdornment14 = Instance.new("BoxHandleAdornment")
-				BoxHandleAdornment14.Name = "LeftFoot"
-				BoxHandleAdornment14.Parent = espFolder3
-				BoxHandleAdornment14.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment14.Transparency = 0.10000000149012
-				BoxHandleAdornment14.Size = Vector3.new(0.100000001, 0.400000006, 0.100000001)
-				BoxHandleAdornment14.Color3 = Color3.new(1, 1, 1)
-				BoxHandleAdornment14.ZIndex = 10
-				BoxHandleAdornment14.Adornee = v.Parent.LeftFoot
-				BoxHandleAdornment14.AlwaysOnTop = true
 				
 				local BoxHandleAdornment15 = Instance.new("BoxHandleAdornment")
 				BoxHandleAdornment15.Name = "HeadHB"
 				BoxHandleAdornment15.Parent = espFolder3
 				BoxHandleAdornment15.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment15.Transparency = 0.10000000149012
+				BoxHandleAdornment15.Transparency = transparency
 				BoxHandleAdornment15.Size = Vector3.new(0.100000001, 0.5, 0.100000001)
 				BoxHandleAdornment15.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment15.ZIndex = 10
@@ -10988,7 +10928,7 @@ function chamPlr(plr)
 				BoxHandleAdornment16.Name = "Shoulders"
 				BoxHandleAdornment16.Parent = espFolder3
 				BoxHandleAdornment16.Color = BrickColor.new("Institutional white")
-				BoxHandleAdornment16.Transparency = 0.10000000149012
+				BoxHandleAdornment16.Transparency = transparency
 				BoxHandleAdornment16.Size = Vector3.new(3.0999999, 0.100000001, 0.100000001)
 				BoxHandleAdornment16.Color3 = Color3.new(1, 1, 1)
 				BoxHandleAdornment16.ZIndex = 10
@@ -10997,20 +10937,16 @@ function chamPlr(plr)
 				BoxHandleAdornment16.SizeRelativeOffset = Vector3.new(0, 0.800000012, 0)
 
 				plr.Character.HumanoidRootPart.AncestryChanged:connect(function()
-					BoxHandleAdornment1:Destroy()
 					BoxHandleAdornment2:Destroy()
 					BoxHandleAdornment3:Destroy()
 					BoxHandleAdornment4:Destroy()
 					BoxHandleAdornment5:Destroy()
 					BoxHandleAdornment6:Destroy()
-					BoxHandleAdornment7:Destroy()
-					BoxHandleAdornment8:Destroy()
 					BoxHandleAdornment9:Destroy()
 					BoxHandleAdornment10:Destroy()
 					BoxHandleAdornment11:Destroy()
 					BoxHandleAdornment12:Destroy()
 					BoxHandleAdornment13:Destroy()
-					BoxHandleAdornment14:Destroy()
 					BoxHandleAdornment15:Destroy()
 					BoxHandleAdornment16:Destroy()
 				end)	
@@ -11051,14 +10987,6 @@ local function onButtonActivated()
 					chamPlr(v)
 				end
 			end
-			plrs.ChildAdded:connect(function(v)
-				v.CharacterAdded:connect(function(char)
-					wait(5)
-					if toggled and plr.Team ~= v.Team and v.Character and v ~= plr then
-						chamPlr(v)
-					end
-				end)
-			end)
 		end		
 	else
 		toggled = false
@@ -18220,5 +18148,5 @@ for i,v in pairs(cors) do
 		pcall(v)
 	end)
 end
-end    
+end
 syn.create_secure_function("Bloxsense", E())
