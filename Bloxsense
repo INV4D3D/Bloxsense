@@ -2302,7 +2302,7 @@ local function onButtonActivated()
 		rage = true
 		script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
 		while rage do
-			wait(1/30)
+			wait(1/40)
 			local mindamage = script.Parent.Parent.Background.Percent.Value
 			if rage and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 				for i,v in next,plrs:GetPlayers() do
