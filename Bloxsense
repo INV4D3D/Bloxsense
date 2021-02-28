@@ -1026,7 +1026,7 @@ Frame19.BorderColor3 = Color3.new(0, 0, 0)
 Frame19.BorderSizePixel = 0
 ImageButton20.Name = "Icon"
 ImageButton20.Parent = Frame19
-ImageButton20.Position = UDim2.new(0, 0, 0.00675675692, 0)
+ImageButton20.Position = UDim2.new(0, 0, 0.00675678253, 0)
 ImageButton20.Size = UDim2.new(0, 162, 0, 148)
 ImageButton20.BackgroundColor = BrickColor.new("Really red")
 ImageButton20.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
@@ -1041,8 +1041,8 @@ ImageButton20.ScaleType = Enum.ScaleType.Fit
 ImageButton20.TileSize = UDim2.new(0.600000024, 0, 0.600000024, 0)
 ImageButton21.Name = "IMG"
 ImageButton21.Parent = ImageButton20
-ImageButton21.Position = UDim2.new(0.182098761, 0, 0.152986273, 0)
-ImageButton21.Size = UDim2.new(0, 102, 0, 102)
+ImageButton21.Position = UDim2.new(0.182098761, 0, 0.159743071, 0)
+ImageButton21.Size = UDim2.new(0, 100, 0, 100)
 ImageButton21.BackgroundColor = BrickColor.new("Really black")
 ImageButton21.BackgroundColor3 = Color3.new(0, 0, 0)
 ImageButton21.BackgroundTransparency = 1
@@ -2034,7 +2034,6 @@ local plrs = game:GetService("Players")
 local plr = plrs.LocalPlayer
 local repstor = game:GetService("ReplicatedStorage")
 local runserv = game:GetService("RunService")
-
 -- Variables
 local cam = workspace.CurrentCamera
 local client = getsenv(plr.PlayerGui.Client)
@@ -2168,9 +2167,6 @@ function simulateHeadShot(target)
 	if gun:FindFirstChild("Range") then
 		gunRange = gun.Range.Value * 5
 	end
-	if gun:FindFirstChild("Melee") then
-		gunRange = 64
-	end
 	if gun:FindFirstChild("DMG") then
 		gunDMG = gun.DMG.Value * 4
 	end
@@ -2205,9 +2201,9 @@ function simulateHeadShot(target)
 			limit = math.min(gunPen, limit + penDistance)
 			local wallbang = false
 			if partPenetrated >= 1 then
-				wallbang = true
+				wallbang = true 
 			end
-			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent.className == "Accessory" or partHit and partHit.Parent.className == "Hat" and partHit.Parent.Name ~= "Door" and partHit.Parent:FindFirstChild("Hostage") == nil then
+			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent.ClassName == "Accessory" or partHit and partHit.Parent.ClassName == "Hat" and partHit.Parent.Name ~= "Door" and partHit.Parent:FindFirstChild("Hostage") == nil then
 			else
 				if partHit and partHit:IsDescendantOf(target.Character) and partHit.Transparency < 1 or partHit.Name == "HeadHB" then
 					return partHit, posHit, damageModifier, wallbang
@@ -2242,16 +2238,13 @@ function simulateBodyShot(target)
 	if gun:FindFirstChild("Penetration") then
 		gunPen = gun.Penetration.Value * 0.01
 	end
-	if gun:FindFirstChild("Melee") then
-		gunRange = 64
-	end
 	if gun:FindFirstChild("Range") then
 		gunRange = gun.Range.Value * 5
 	end
 	if gun:FindFirstChild("DMG") then
 		gunDMG = gun.DMG.Value
 	end
-	local direction = CFrame.new(cam.CFrame.p, target.Character.LowerTorso.Position).lookVector.unit * gunRange * 0.0694
+	local direction = CFrame.new(cam.CFrame.p, target.Character.LowerTorso.Position+Vector3.new(0,-0.5,0)).lookVector.unit * gunRange * 0.0694
 	local rayCasted = Ray.new(cam.CFrame.p, direction)
 	local hitPart, hitPos = workspace:FindPartOnRayWithIgnoreList(rayCasted, hitList, false, true)
 	local partPenetrated = 0
@@ -2284,9 +2277,9 @@ function simulateBodyShot(target)
 			if partPenetrated >= 1 then
 				wallbang = true
 			end
-			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent.className == "Accessory" or partHit and partHit.Parent.className == "Hat" and partHit.Parent.Name ~= "Door" and partHit.Parent:FindFirstChild("Hostage") == nil then
+			if partHit and partHit.Parent and partHit.Parent.Name == "Hitboxes" or partHit and partHit.Parent.ClassName == "Accessory" or partHit and partHit.Parent.ClassName == "Hat" and partHit.Parent.Name ~= "Door" and partHit.Parent:FindFirstChild("Hostage") == nil then
 			else
-				if partHit and partHit:IsDescendantOf(target.Character) and partHit.Transparency < 1 or partHit.Name == "HeadHB" then
+				if partHit and partHit:IsDescendantOf(target.Character) and partHit.Transparency < 1 or partHit.Name == "LowerTorso" then
 					return partHit, posHit, damageModifier, wallbang
 				end
 			end
@@ -2310,14 +2303,14 @@ local function onButtonActivated()
 		rage = true
 		script.Parent.BackgroundColor3 = Color3.fromRGB(181, 255, 42)
 		autowallloop=runserv.Stepped:Connect(function()
+			local mindamage = script.Parent.Parent.Background.Percent.Value
 			if rage and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 				for i,v in next,plrs:GetPlayers() do
 					if v and v ~= plr and v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.TeamColor ~= plr.TeamColor then
 						pcall(function()
 							local partHit, posHit, damageModifier, wallbang = simulateHeadShot(v)
 							local partHit2, posHit2, damageModifier2, wallbang2 = simulateBodyShot(v)
-							if partHit and (damageModifier * client.gun.DMG.Value * 4) > script.Parent.Parent.Background.Percent.Value or partHit2 and (damageModifier2 * client.gun.DMG.Value) > script.Parent.Parent.Background.Percent.Value then
-								if (damageModifier * client.gun.DMG.Value * 4) >= (damageModifier2 * client.gun.DMG.Value) then
+								if partHit and (damageModifier * client.gun.DMG.Value * 4) >= mindamage then
 									target = partHit
 									script.Firing.Value = true
 									RAGEMETATABLE.__namecall = newcclosure(
@@ -2340,7 +2333,7 @@ local function onButtonActivated()
 									end
 									fireBullet()
 									script.Firing.Value = false		
-								elseif (damageModifier * client.gun.DMG.Value * 4) < (damageModifier2 * client.gun.DMG.Value) then
+								elseif partHit2 and (damageModifier2 * client.gun.DMG.Value) >= mindamage then
 									target = partHit2
 									script.Firing.Value = true
 									RAGEMETATABLE.__namecall = newcclosure(
@@ -2363,7 +2356,6 @@ local function onButtonActivated()
 									end
 									fireBullet()
 									script.Firing.Value = false		
-								end
 							else
 								target = nil
 							end
@@ -2448,7 +2440,7 @@ Frame86.BorderSizePixel = 0
 Frame86.ZIndex = 3
 ImageButton87.Name = "Icon"
 ImageButton87.Parent = Frame84
-ImageButton87.Position = UDim2.new(-0.000337362289, 0, 0.00675675692, 0)
+ImageButton87.Position = UDim2.new(-0.000337362289, 0, 0.00675678253, 0)
 ImageButton87.Size = UDim2.new(0, 162, 0, 148)
 ImageButton87.BackgroundColor = BrickColor.new("Really red")
 ImageButton87.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
@@ -2463,8 +2455,8 @@ ImageButton87.ScaleType = Enum.ScaleType.Fit
 ImageButton87.TileSize = UDim2.new(0.600000024, 0, 0.600000024, 0)
 ImageButton88.Name = "IMG"
 ImageButton88.Parent = ImageButton87
-ImageButton88.Position = UDim2.new(0.200691327, 0, 0.164238229, 0)
-ImageButton88.Size = UDim2.new(0, 96, 0, 96)
+ImageButton88.Position = UDim2.new(0.181962967, 0, 0.149459451, 0)
+ImageButton88.Size = UDim2.new(0, 102, 0, 102)
 ImageButton88.BackgroundColor = BrickColor.new("Really red")
 ImageButton88.BackgroundColor3 = Color3.new(1, 0, 0)
 ImageButton88.BackgroundTransparency = 1
@@ -4145,9 +4137,10 @@ local function onButtonActivated()
 						v.Color3 = Color
 					end
 				end
-			end
+			end		
 		end)
 		while toggled == true do
+			wait()
 			local Player = game:GetService('Players').LocalPlayer
 			Player.CharacterAdded:Wait()
 			wait(5)
@@ -5640,8 +5633,8 @@ local function onButtonActivated()
 		toggled = false
 		script.Parent.BackgroundTransparency = 0
 		script.Parent.BackgroundColor3 = Color3.fromRGB(74, 74, 74)
+		game.Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
 		DeleteFX()
-		lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
 	end
 end
 
@@ -7374,7 +7367,9 @@ script.Parent.MouseButton1Click:Connect(function()
 					weaponesp.RichText = true
 					weaponesp.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 					weaponesp.TextStrokeTransparency = 0.9
-					
+					o.Parent.HumanoidRootPart.AncestryChanged:connect(function()
+						GUI5:Destroy()
+					end)
 					spawn(function()
 						while wait() do	
 							weaponesp.Text = o.Parent.EquippedTool.Value
@@ -7777,6 +7772,9 @@ script.Parent.MouseButton1Click:Connect(function()
 					nameesp.RichText = true
 					nameesp.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 					nameesp.TextStrokeTransparency = 0.9
+					o.Parent.HumanoidRootPart.AncestryChanged:connect(function()
+						GUI2:Destroy()
+					end)
 					spawn(function()
 						nameesp.Text = o.Parent.Humanoid.DisplayName
 						while wait() do
@@ -8268,9 +8266,13 @@ script.Parent.MouseButton1Click:Connect(function()
 					greenpart.Size = UDim2.new(1, 0, 1, 0)
 					greenpart.ZIndex = 0
 					local UIGradient = Instance.new("UIGradient")
-					UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(117, 255, 117)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(157, 255, 155))}
+					UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(114, 255, 107)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(157, 255, 155))}
 					UIGradient.Rotation = 90
 					UIGradient.Parent = greenpart
+					
+					o.Parent.HumanoidRootPart.AncestryChanged:connect(function()
+						GUI4:Destroy()
+					end)
 					
 					spawn(function()
 						while wait() do
@@ -8413,7 +8415,10 @@ script.Parent.MouseButton1Click:Connect(function()
 					health.TextScaled = true
 					health.TextSize = 50
 					health.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-					health.TextStrokeTransparency = 0.9				
+					health.TextStrokeTransparency = 0.9	
+					o.Parent.HumanoidRootPart.AncestryChanged:connect(function()
+						GUI:Destroy()
+					end)
 					spawn(function()
 					while wait() do
 						local healthtext = o.Parent.Humanoid.Health
@@ -8775,6 +8780,9 @@ script.Parent.MouseButton1Click:Connect(function()
 					distanceesp.TextSize = 50
 					distanceesp.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 					distanceesp.TextStrokeTransparency = 0.9
+					o.Parent.HumanoidRootPart.AncestryChanged:connect(function()
+						GUI:Destroy()
+					end)
 					spawn(function()
 						while wait(0.2) do
 							local DistanceFromPlayer = (plr.Character.Head.Position-v.Character.Head.Position).Magnitude
@@ -9153,6 +9161,9 @@ script.Parent.MouseButton1Click:Connect(function()
 					FrameRight.Size = UDim2.new(0, 3, 1, 0)
 					FrameRight.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					FrameRight.BorderMode = Enum.BorderMode.Inset
+					o.Parent.HumanoidRootPart.AncestryChanged:connect(function()
+						GUI:Destroy()
+					end)
 					spawn(function()
 						while wait() do
 							local Color = script.Parent.Color.BackgroundColor3
@@ -9887,18 +9898,15 @@ local function onButtonActivated()
 				chamPlr(v)
 			end
 		end
-		spawn(function()
-			while toggled == true do
-				wait()
-				local Color = script.Parent.Color.BackgroundColor3
-				for	i,v in pairs(game.CoreGui.Bones:GetDescendants())  do
-					if v:IsA("BoxHandleAdornment") then
-						v.Color3 = Color
-					end
+
+		while toggled == true do
+			wait()
+			local Color = script.Parent.Color.BackgroundColor3
+			for	i,v in pairs(game.CoreGui.Bones:GetDescendants())  do
+				if v:IsA("BoxHandleAdornment") then
+					v.Color3 = Color
 				end
 			end
-		end)
-		while toggled == true do
 			local Player = game:GetService('Players').LocalPlayer
 			Player.CharacterAdded:Wait()
 			wait(5)
@@ -9980,6 +9988,9 @@ script.Parent.MouseButton1Click:Connect(function()
 					Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					Frame.Size = UDim2.new(1, 0, 1, 0)
 					Frame.BorderMode = Enum.BorderMode.Inset
+					o.Parent.HumanoidRootPart.AncestryChanged:connect(function()
+						GUI:Destroy()
+					end)
 					spawn(function()
 						while wait() do
 							local Color = script.Parent.Color.BackgroundColor3
@@ -11388,7 +11399,7 @@ Frame448.BorderSizePixel = 0
 Frame448.ZIndex = 3
 ImageButton449.Name = "Icon"
 ImageButton449.Parent = Frame402
-ImageButton449.Position = UDim2.new(-0.000337362289, 0, 0.00675675692, 0)
+ImageButton449.Position = UDim2.new(-0.000337362289, 0, 0.00675678253, 0)
 ImageButton449.Size = UDim2.new(0, 162, 0, 148)
 ImageButton449.BackgroundColor = BrickColor.new("Really red")
 ImageButton449.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
@@ -11403,8 +11414,8 @@ ImageButton449.ScaleType = Enum.ScaleType.Fit
 ImageButton449.TileSize = UDim2.new(0.600000024, 0, 0.600000024, 0)
 ImageButton450.Name = "IMG"
 ImageButton450.Parent = ImageButton449
-ImageButton450.Position = UDim2.new(0.182382703, 0, 0.153270259, 0)
-ImageButton450.Size = UDim2.new(0, 102, 0, 102)
+ImageButton450.Position = UDim2.new(0.182382703, 0, 0.160027027, 0)
+ImageButton450.Size = UDim2.new(0, 100, 0, 100)
 ImageButton450.BackgroundColor = BrickColor.new("Really red")
 ImageButton450.BackgroundColor3 = Color3.new(1, 0, 0)
 ImageButton450.BackgroundTransparency = 1
@@ -11581,7 +11592,7 @@ TextLabel462.TextWrap = true
 TextLabel462.TextWrapped = true
 ImageButton463.Name = "Icon"
 ImageButton463.Parent = Frame453
-ImageButton463.Position = UDim2.new(0, 0, 0.00675675692, 0)
+ImageButton463.Position = UDim2.new(0, 0, 0.00675678253, 0)
 ImageButton463.Size = UDim2.new(0, 162, 0, 148)
 ImageButton463.BackgroundColor = BrickColor.new("Really red")
 ImageButton463.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
@@ -13874,7 +13885,7 @@ Frame542.BorderSizePixel = 0
 Frame542.ZIndex = 2
 ImageButton543.Name = "Icon"
 ImageButton543.Parent = Frame466
-ImageButton543.Position = UDim2.new(-0.000337362289, 0, 0.00675675692, 0)
+ImageButton543.Position = UDim2.new(-0.000337362289, 0, 0.00675678253, 0)
 ImageButton543.Size = UDim2.new(0, 162, 0, 148)
 ImageButton543.BackgroundColor = BrickColor.new("Really red")
 ImageButton543.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
@@ -13889,8 +13900,8 @@ ImageButton543.ScaleType = Enum.ScaleType.Fit
 ImageButton543.TileSize = UDim2.new(0.600000024, 0, 0.600000024, 0)
 ImageButton544.Name = "IMG"
 ImageButton544.Parent = ImageButton543
-ImageButton544.Position = UDim2.new(0.231074005, 0, 0.208718389, 0)
-ImageButton544.Size = UDim2.new(0, 86, 0, 86)
+ImageButton544.Position = UDim2.new(0.237518519, 0, 0.210270271, 0)
+ImageButton544.Size = UDim2.new(0, 84, 0, 84)
 ImageButton544.BackgroundColor = BrickColor.new("Really red")
 ImageButton544.BackgroundColor3 = Color3.new(1, 0, 0)
 ImageButton544.BackgroundTransparency = 1
@@ -14892,7 +14903,7 @@ TextLabel604.TextWrap = true
 TextLabel604.TextWrapped = true
 ImageButton605.Name = "Icon"
 ImageButton605.Parent = Frame546
-ImageButton605.Position = UDim2.new(-0.000337362289, 0, 0.00675675692, 0)
+ImageButton605.Position = UDim2.new(-0.000337362289, 0, 0.00675678253, 0)
 ImageButton605.Size = UDim2.new(0, 162, 0, 148)
 ImageButton605.BackgroundColor = BrickColor.new("Really red")
 ImageButton605.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
@@ -14907,8 +14918,8 @@ ImageButton605.ScaleType = Enum.ScaleType.Fit
 ImageButton605.TileSize = UDim2.new(0.600000024, 0, 0.600000024, 0)
 ImageButton606.Name = "IMG"
 ImageButton606.Parent = ImageButton605
-ImageButton606.Position = UDim2.new(0.219209835, 0, 0.189513549, 0)
-ImageButton606.Size = UDim2.new(0, 90, 0, 90)
+ImageButton606.Position = UDim2.new(0.213036984, 0, 0.182756841, 0)
+ImageButton606.Size = UDim2.new(0, 92, 0, 92)
 ImageButton606.BackgroundColor = BrickColor.new("Really red")
 ImageButton606.BackgroundColor3 = Color3.new(1, 0, 0)
 ImageButton606.BackgroundTransparency = 1
@@ -15042,7 +15053,7 @@ Frame614.BorderSizePixel = 0
 Frame614.ZIndex = 3
 ImageButton615.Name = "Icon"
 ImageButton615.Parent = Frame608
-ImageButton615.Position = UDim2.new(-0.000337362289, 0, 0.00675675692, 0)
+ImageButton615.Position = UDim2.new(-0.000337362289, 0, 0.00675678253, 0)
 ImageButton615.Size = UDim2.new(0, 162, 0, 148)
 ImageButton615.BackgroundColor = BrickColor.new("Really red")
 ImageButton615.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
@@ -15057,8 +15068,8 @@ ImageButton615.ScaleType = Enum.ScaleType.Fit
 ImageButton615.TileSize = UDim2.new(0.600000024, 0, 0.600000024, 0)
 ImageButton616.Name = "IMG"
 ImageButton616.Parent = ImageButton615
-ImageButton616.Position = UDim2.new(0.262629658, 0, 0.245278955, 0)
-ImageButton616.Size = UDim2.new(0, 75, 0, 75)
+ImageButton616.Position = UDim2.new(0.262629658, 0, 0.252035737, 0)
+ImageButton616.Size = UDim2.new(0, 72, 0, 72)
 ImageButton616.BackgroundColor = BrickColor.new("Really red")
 ImageButton616.BackgroundColor3 = Color3.new(1, 0, 0)
 ImageButton616.BackgroundTransparency = 1
@@ -16562,7 +16573,7 @@ button.MouseLeave:Connect(onMouseLeft)
 end))
 ImageButton705.Name = "Icon"
 ImageButton705.Parent = Frame619
-ImageButton705.Position = UDim2.new(-0.000337362289, 0, 0.00675675692, 0)
+ImageButton705.Position = UDim2.new(-0.000337362289, 0, 0.00675678253, 0)
 ImageButton705.Size = UDim2.new(0, 162, 0, 148)
 ImageButton705.BackgroundColor = BrickColor.new("Really red")
 ImageButton705.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
@@ -17324,18 +17335,6 @@ end
 set_valid('a', 'z')
 set_valid('A', 'Z')
 set_valid('0', '9')
-for i,v in next, game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom:GetDescendants() do
-	v.Visible = false
-end
-game:GetService("RunService").Stepped:connect(function()
-	game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom.Visible = false
-	game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom.BackgroundTransparency = 1
-end)
-print("[bloxsense] Injected")
-local runservice = game:GetService("RunService")
-game["Run Service"].RenderStepped:Connect(function()
-	script.Parent.Name = "[$$$] "..random_string(16).." [$$$]"	
-end)
 
 local Meta = getrawmetatable(game)
 setreadonly(Meta,false)
@@ -17350,6 +17349,17 @@ Meta.__namecall = newcclosure(function(self,...)
 	return oldNamecall(self,unpack(Arguments))
 end)
 makefolder("bloxsense_configs")
+
+print("[bloxsense] Injected")
+local runservice = game:GetService("RunService")
+game["Run Service"].RenderStepped:Connect(function()
+	script.Parent.Name = "[$$$] "..random_string(16).." [$$$]"	
+	game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom.Visible = false
+	game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom.BackgroundTransparency = 1
+	for i,v in next, game.Players.LocalPlayer.PlayerGui.GUI.SuitZoom:GetDescendants() do
+		v.Visible = false
+	end
+end)
 end))
 Frame714.Name = "Watermark"
 Frame714.Parent = ScreenGui0
